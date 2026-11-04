@@ -266,8 +266,8 @@ static void mover_guisantes(int **mapa) {
     for (int f = 0; f < filas_juego; f++) {
         for (int c = columnas_juego - 1; c >= 1; c--) {
             if (mapa[f][c] == GUISANTE) {
-                mapa[f][c] = PASTO;               /* sale de esta celda */
-                llegar_guisante(mapa, f, c + 1);  /* y llega a la siguiente */
+                mapa[f][c] = PASTO;               // sale de esta celda 
+                llegar_guisante(mapa, f, c + 1);  // y llega a la siguiente 
             }
         }
     }
@@ -281,7 +281,7 @@ static void disparar_plantas(int **mapa) {
     for (int f = 0; f < filas_juego; f++) {
         for (int c = 1; c < columnas_juego; c++) {
             if (mapa[f][c] == LANZAGUISANTES && hay_zombie_a_la_derecha(mapa, f, c)) {
-                llegar_guisante(mapa, f, c + 1);  /* el guisante nace justo a su derecha */
+                llegar_guisante(mapa, f, c + 1);  // el guisante nace justo a su derecha 
             }
         }
     }
