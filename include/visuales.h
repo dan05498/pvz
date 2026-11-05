@@ -5,9 +5,9 @@
 #include <SDL3_image/SDL_image.h>
 #include <stdbool.h>
 
-#define FILAS 5
+#define FILAS 6
 #define COLUMNAS 8
-#define TAM_CASILLA 64
+#define TAM_CASILLA 128
 
 // Funciones de inicio y cierre
 bool inicializarVisuales(void);

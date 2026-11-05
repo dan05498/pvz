@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "logica.h"
+#include "include/logica.h"
 
 #define FILAS     5
 #define COLUMNAS  10

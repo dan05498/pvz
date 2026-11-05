@@ -13,7 +13,7 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include "logica.h"
+#include "../include/logica.h"
 
 // CONFIG INICIAL DEL JUEGO (modificable)
 
