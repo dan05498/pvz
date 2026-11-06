@@ -1,5 +1,5 @@
-#ifndef PVZ_H
-#define PVZ_H
+#ifndef ENTRADAS_H
+#define ENTRADAS_H
 
 //configuracion
     struct configuracion{
