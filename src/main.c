@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../include/confi.h"
+#include "../include/entradas.h"
 #include "../include/logica.h"
 #include "../include/visuales.h"
 
