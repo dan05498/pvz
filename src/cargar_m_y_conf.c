@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "confi.h"
+#include "../include/confi.h"
 
 //ahora se carga la confi
 void cargar_configuracion(struct configuracion *cfg, const char *ruta){

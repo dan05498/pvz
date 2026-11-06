@@ -1,5 +1,8 @@
 #include <stdio.h>
-#include "confi.h"
+#include "../include/confi.h"
+#include "../include/logica.h"
+#include "../include/visuales.h"
+
 
 int main(){
     struct configuracion cfg;
