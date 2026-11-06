@@ -7,8 +7,8 @@ int main(){
     int filas, columnas;
 
     //funciones:
-    cargar_configuracion(&cfg, "../../configuracion/config.txt");
-    cargar_mapa(mapa, &filas, &columnas, "../../mapas/mapa.txt");
+    cargar_configuracion(&cfg, "../configuracion/config.txt");
+    cargar_mapa(mapa, &filas, &columnas, "../mapas/mapa.txt");
 
     return 0;
 }
