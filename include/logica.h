@@ -1,55 +1,41 @@
-/*
- *  MENÚ DE LA LÓGICA
- */
-
 #ifndef LOGICA_H
 #define LOGICA_H
 
-//NUMEROS DE ELEMENTOS
+#include "entradas.h"
 
-// Plantas (0xx) 
-#define GIRASOL          1
+#define FILAS_JUEGO      5    //Filas y columnas donde se jugará
+#define COLUMNAS_JUEGO   10
+
+#define PASTO            0
+#define GIRASOL          1    //Plantas
 #define LANZAGUISANTES   2
 #define NUEZ             3
 
-// Zombies (1xx) 
-#define ZOMBIE           101
-#define FLAG_ZOMBIE      102
+#define ZOMBIE           10   //Zombies
+#define FLAG_ZOMBIE      11
 
-// Escenario (2xx) 
-#define PASTO            200
-#define LAPIDA           201
-#define CASA             202   //la columna 0 siempre es la casa 
+#define GUISANTE         20   
 
-// Proyectiles (3xx) 
-#define GUISANTE         300
+#define CASA             30
 
-//estado de la partida q devolverá (estado_juego) 
 #define JUGANDO          0
 #define VICTORIA         1
 #define DERROTA          2
 
-//FUNCIONES
+void iniciar_logica(struct configuracion *cfg);  //Con esto creamos el mapa de juego
 
-/* se llama una vez para crear la matriz con la 1ra columna de casa
-y rellena de pasto */
-void iniciar_logica(int **mapa, int filas, int columnas);
+int plantar(int tipo, int fila, int col);
 
-// para liberar la memoria 
-void liberar_logica(void);
+void actualizar_juego(void);
 
-// El jugador quiere plantar. Devuelve 1 si pudo y 0 si no x pocos soles o fuera de la matriz 
-int plantar(int **mapa, int tipo, int fila, int col);
+int obtener_celda(int fila, int col);
 
-// avanza de a un turno se llama una vez por cada vuelta del loop. 
-void actualizar_juego(int **mapa);
-
-// Datos para que después en tarea 3 se muestre en pantalla. 
-int estado_juego(void);       // JUGANDO, VICTORIA DERROTA
+int estado_juego(void);
 int obtener_soles(void);
 int obtener_vida_casa(void);
 int obtener_oleada(void);
 int obtener_total_oleadas(void);
 int costo_planta(int tipo);
 
+#endif
 #endif
