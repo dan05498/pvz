@@ -302,6 +302,8 @@ int obtener_celda(int fila, int col) {   //dejé esta función para Tarea 3 pued
     return jardin[fila][col];
 }
 
+//Funciones aux
+
 int estado_juego(void) {
     return estado;
 }
