@@ -295,7 +295,7 @@ void actualizar_juego(void) { //función con la que se actualiza el juego
 }
 
 
-int obtener_celda(int fila, int col) {
+int obtener_celda(int fila, int col) {   //dejé esta función para Tarea 3 pueda dibujar y saber qué hay en cada celda
     if (fila < 0 || fila >= FILAS_JUEGO || col < 0 || col >= COLUMNAS_JUEGO) {
         return -1;
     }
