@@ -1,4 +1,4 @@
-0 | 1 cesped
+0     cesped
 2     interfazzz
 5     casa
 4     arbusto
