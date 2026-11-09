@@ -38,4 +38,3 @@ int obtener_total_oleadas(void);
 int costo_planta(int tipo);
 
 #endif
-#endif

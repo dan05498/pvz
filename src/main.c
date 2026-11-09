@@ -10,8 +10,8 @@ int main(){
     int filas, columnas;
 
     //funciones:
-    cargar_configuracion(&cfg, "../config/config.txt");
-    cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
+    // cargar_configuracion(&cfg, "../config/config.txt");
+    // cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
 
 
     //Arranque de Visuales:
@@ -19,24 +19,21 @@ int main(){
         return 1;
     }
 
-    //Carga de texturas:
+    bool inicio = true;
+    float pos_camara_x = 500.0f;
+    float pos_camara_jugando = 210.0f;
+    float vel_camara = 4.0f;
 
-    //Pasto:
-    SDL_Texture *texturaPasto1 = cargarTextura("assets/grass1.png");
-    if(!texturaPasto1){
-        cerrarVisuales();
-        return 1;
+    //Animación al inicio (desde la calle hasta la cuadricula)
+    while(inicio){
+        if (!animacionInicio(&pos_camara_x, pos_camara_jugando, vel_camara)){
+            inicio = false;
+        }
+        loopVisuales(pos_camara_x);
     }
-
-    SDL_Texture *texturaPasto2 = cargarTextura("assets/grass2.png");
-    if(!texturaPasto2){
-        cerrarVisuales();
-        return 1;
-    }
-
-    bool jugando = true;
 
     //Ciclo de juego:
+    bool jugando = true;
 
     while(jugando){
         
@@ -48,23 +45,9 @@ int main(){
             }
         }
 
-        prepararFondo();
-
-        for(int fila = 0; fila < filas; fila++){
-            for(int columna = 0; columna < columnas; columna++){
-                if(mapa[fila][columna] == 0){
-                    dibujarCasilla(texturaPasto1, fila, columna);
-                } else if(mapa[fila][columna] == 1){
-                    dibujarCasilla(texturaPasto2, fila, columna);
-                }
-            }
-        }
-
-        presentarPantalla();
+        loopVisuales(pos_camara_x);
     }
 
-    SDL_DestroyTexture(texturaPasto1);
-    SDL_DestroyTexture(texturaPasto2);
     cerrarVisuales();
 
     return 0;

@@ -5,9 +5,16 @@
 #include <SDL3_image/SDL_image.h>
 #include <stdbool.h>
 
-#define FILAS 6
-#define COLUMNAS 8
-#define TAM_CASILLA 128
+#define ANCHO 800.0f
+#define ALTO 600.0f
+
+#define FILAS 5
+#define COLUMNAS 9
+
+#define MARGEN_X 48.0f
+#define MARGEN_Y 86.0f
+#define ANCHO_CELDA 79.0f
+#define ALTO_CELDA 97.0f
 
 // Funciones de inicio y cierre
 bool inicializarVisuales(void);
@@ -16,9 +23,15 @@ void cerrarVisuales(void);
 // Funciones para cargar y dibujar objetos
 SDL_Texture *cargarTextura(const char *archivo);
 void prepararFondo(void); // Pinta de gris la pantalla antes de dibujar
+void RenderizarFondo(SDL_Renderer*, SDL_Texture*, float);
 void presentarPantalla(void); // Actualiza la pantalla
 
-// Función que dibuja una textura directo en una coordenadade la matriz
-void dibujarCasilla(SDL_Texture *textura, int fila, int columna);
+//Prueba de la cuadrícula
+void RenderizarCuadriculaDebug(SDL_Renderer* renderer);
+
+
+void loopVisuales(float);
+
+bool animacionInicio(float*, float, float);
 
 #endif
