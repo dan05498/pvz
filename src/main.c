@@ -15,9 +15,16 @@ int main(){
     // cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
 
        if(!audio_iniciar()) return 1;
-   printf("Musica sonando. Presiona Enter para terminar...\n");
-   getchar();
-   audio_cerrar();
+   printf("Musica sonando. Presiona Enter para terminar...\n");// borrar luego si les convence
+   getchar(); // para que la musica suene esto luego se quita pero es por probar ahora
+   audio_cerrar(); // con esto finaliza todo
+
+   /*para que funcione:
+cd ~/pvz/pvz
+./compilar.sh
+cd src
+../pvz
+*/
 
 
     //Arranque de Visuales:
