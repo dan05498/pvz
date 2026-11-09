@@ -22,13 +22,13 @@ int main(){
     //Carga de texturas:
 
     //Pasto:
-    SDL_Texture *texturaPasto1 = cargarTextura("../assets/grass1.png");
+    SDL_Texture *texturaPasto1 = cargarTextura("assets/grass1.png");
     if(!texturaPasto1){
         cerrarVisuales();
         return 1;
     }
 
-    SDL_Texture *texturaPasto2 = cargarTextura("../assets/grass2.png");
+    SDL_Texture *texturaPasto2 = cargarTextura("assets/grass2.png");
     if(!texturaPasto2){
         cerrarVisuales();
         return 1;
