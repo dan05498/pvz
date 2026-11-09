@@ -2,6 +2,7 @@
 #include "../include/entradas.h"
 #include "../include/logica.h"
 #include "../include/visuales.h"
+   #include "../include/audio.h"
 
 
 int main(){
@@ -12,6 +13,11 @@ int main(){
     //funciones:
     // cargar_configuracion(&cfg, "../config/config.txt");
     // cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
+
+       if(!audio_iniciar()) return 1;
+   printf("Musica sonando. Presiona Enter para terminar...\n");
+   getchar();
+   audio_cerrar();
 
 
     //Arranque de Visuales:
