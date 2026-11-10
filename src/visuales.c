@@ -2,10 +2,7 @@
 
 static SDL_Window *ventana = NULL;
 static SDL_Renderer *renderizador = NULL;
-static SDL_Texture *fondo1 = NULL;
-
-#define POS_CAMARA_JUGANDO      210.0f
-#define VEL_CAMARA              6.0f              
+static SDL_Texture *fondo1 = NULL;           
 
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 

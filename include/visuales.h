@@ -10,12 +10,15 @@
 #define ALTO 600.0f
 
 #define FILAS 5
-#define COLUMNAS 9
+#define COLUMNAS 10
 
-#define MARGEN_X 48.0f
+#define MARGEN_X -31.0f
 #define MARGEN_Y 86.0f
 #define ANCHO_CELDA 79.0f
 #define ALTO_CELDA 97.0f
+
+#define POS_CAMARA_JUGANDO      210.0f
+#define VEL_CAMARA              6.0f   
 
 // Funciones de inicio y cierre
 bool inicializarVisuales(void);
