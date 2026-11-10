@@ -14,7 +14,7 @@ static void reproducir_en_bucle(MIX_Track *t){
     SDL_PropertiesID opciones = SDL_CreateProperties();
     SDL_SetNumberProperty(opciones, MIX_PROP_PLAY_LOOPS_NUMBER, -1); //para infinito el -1
     MIX_PlayTrack(t,opciones);
-    SDL_DestroyProperties(opciones);//MIX_PlayTrack hace una copia y la guarda
+    SDL_DestroyProperties(opciones);//MIX_PlayTrack hace una copia y la guarda por eso podemos destruir
 }
 
 bool audio_iniciar(void){
