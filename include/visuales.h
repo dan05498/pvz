@@ -32,6 +32,6 @@ void RenderizarCuadriculaDebug(SDL_Renderer* renderer);
 
 void loopVisuales(float);
 
-bool animacionInicio(float*, float, float);
+bool animacionInicio(float*);
 
 #endif

@@ -2,8 +2,16 @@
 #include "../include/entradas.h"
 #include "../include/logica.h"
 #include "../include/visuales.h"
-   #include "../include/audio.h"
+#include "../include/audio.h"
 
+typedef enum {
+    MENU,
+    INTRO,
+    PLAY,
+    PAUSA,
+    DEFEAT,
+    VICTORY
+} estado;
 
 int main(){
     struct configuracion cfg;
@@ -14,7 +22,7 @@ int main(){
     // cargar_configuracion(&cfg, "../config/config.txt");
     // cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
 
-       if(!audio_iniciar()) return 1;
+    if(!audio_iniciar()) return 1;
 
    /*para que funcione:
 cd ~/pvz/pvz
@@ -29,30 +37,38 @@ cd src
         return 1;
     }
 
-    bool inicio = true;
     float pos_camara_x = 500.0f;
-    float pos_camara_jugando = 210.0f;
-    float vel_camara = 4.0f;
-
-    //Animación al inicio (desde la calle hasta la cuadricula)
-    while(inicio){
-        if (!animacionInicio(&pos_camara_x, pos_camara_jugando, vel_camara)){
-            inicio = false;
-        }
-        loopVisuales(pos_camara_x);
-    }
 
     //Ciclo de juego:
     bool jugando = true;
+    estado estadoJuego = INTRO;
 
     while(jugando){
-        
+
         //Eventos (Entradas)
         SDL_Event evento;
         while(SDL_PollEvent(&evento)){
             if(evento.type == SDL_EVENT_QUIT){  //Botón de cerrar
                 jugando = false;
             }
+        }
+
+        switch (estadoJuego) {
+            case MENU:
+                
+                break;
+            case INTRO:
+                if (!animacionInicio(&pos_camara_x)){
+                    estadoJuego = PLAY;    
+                }
+                loopVisuales(pos_camara_x);
+                break;
+            case PLAY:
+
+
+
+                
+                break;
         }
 
         loopVisuales(pos_camara_x);

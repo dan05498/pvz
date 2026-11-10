@@ -20,7 +20,7 @@ OBJ_MAIN = $(OBJ_DIR)/main.o
 SRC_PRUEBA = $(SRC_DIR)/main_prueba.c
 OBJ_PRUEBA = $(OBJ_DIR)/main_prueba.o
 
-all: directories $(BIN_DIR)/$(TARGET)
+all: clean directories $(BIN_DIR)/$(TARGET)
 
 directories:
 	@mkdir -p $(OBJ_DIR)
