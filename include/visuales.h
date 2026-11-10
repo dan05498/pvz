@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <stdbool.h>
 
 #define ANCHO 800.0f
@@ -18,7 +19,7 @@
 
 // Funciones de inicio y cierre
 bool inicializarVisuales(void);
-void cerrarVisuales(void);
+void cerrarSDL(void);
 
 // Funciones para cargar y dibujar objetos
 SDL_Texture *cargarTextura(const char *archivo);
@@ -28,7 +29,6 @@ void presentarPantalla(void); // Actualiza la pantalla
 
 //Prueba de la cuadrícula
 void RenderizarCuadriculaDebug(SDL_Renderer* renderer);
-
 
 void loopVisuales(float);
 

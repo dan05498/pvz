@@ -81,13 +81,14 @@ void RenderizarCuadriculaDebug(SDL_Renderer* renderizador) {
     }
 }
 
-void cerrarVisuales(void) {
+void cerrarSDL(void) {
     if(fondo1) {
         SDL_DestroyTexture(fondo1); 
         fondo1 = NULL;
     }
     if(renderizador) SDL_DestroyRenderer(renderizador);
     if(ventana) SDL_DestroyWindow(ventana);
+    MIX_Quit();
     SDL_Quit();
 }
 
