@@ -2,7 +2,7 @@
 
 static SDL_Window *ventana = NULL;
 static SDL_Renderer *renderizador = NULL;
-static SDL_Texture *fondo1 = NULL;
+static SDL_Texture *fondo1 = NULL;           
 
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 
@@ -81,13 +81,14 @@ void RenderizarCuadriculaDebug(SDL_Renderer* renderizador) {
     }
 }
 
-void cerrarVisuales(void) {
+void cerrarSDL(void) {
     if(fondo1) {
         SDL_DestroyTexture(fondo1); 
         fondo1 = NULL;
     }
     if(renderizador) SDL_DestroyRenderer(renderizador);
     if(ventana) SDL_DestroyWindow(ventana);
+    MIX_Quit();
     SDL_Quit();
 }
 
@@ -97,7 +98,7 @@ void loopVisuales(float pos_camara_x){
     if(fondo1) {
         RenderizarFondo(renderizador, fondo1, pos_camara_x);
         
-        if (pos_camara_x == 210.0f) {
+        if (pos_camara_x == POS_CAMARA_JUGANDO) {
             RenderizarCuadriculaDebug(renderizador);
         }
     }
@@ -105,11 +106,11 @@ void loopVisuales(float pos_camara_x){
     presentarPantalla();
 }
 
-bool animacionInicio(float *pos_camara_x, float pos_camara_jugando, float vel_camara){
-    if(*pos_camara_x > pos_camara_jugando){
-            *pos_camara_x -= vel_camara;
-        } else if(*pos_camara_x <= pos_camara_jugando){
-            *pos_camara_x = pos_camara_jugando;
+bool animacionInicio(float *pos_camara_x){
+    if(*pos_camara_x > POS_CAMARA_JUGANDO){
+            *pos_camara_x -= VEL_CAMARA;
+        } else if(*pos_camara_x <= POS_CAMARA_JUGANDO){
+            *pos_camara_x = POS_CAMARA_JUGANDO;
             return false;
         }
     return true;

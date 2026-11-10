@@ -8,7 +8,7 @@ static MIX_Track *track_comer = NULL;
 static MIX_Audio *efectos[SFX_Total];
 static bool comiendo_activo = false;
 
-#define RUTA_MUSICA"../assets/pvz_soundtrack1.mp3"
+#define RUTA_MUSICA"assets/pvz_soundtrack1.mp3"
 
 static void reproducir_en_bucle(MIX_Track *t){
     SDL_PropertiesID opciones = SDL_CreateProperties();
@@ -48,9 +48,4 @@ bool audio_iniciar(void){
     void audio_reporducir(Efecto e){
         if(e < 0 || e>=SFX_Total)return;
         MIX_PlayAudio(mixer, efectos[e]);
-    }
-
-    void audio_cerrar(void){
-        MIX_Quit(); //funcion para quitar todo el sonido osea todo el audio creado
-        SDL_Quit();
     }

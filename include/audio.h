@@ -15,6 +15,5 @@ bool audio_iniciar(void);   //musica en bucle
 void audio_reproducir(Efecto e);    //superponer
 void audio_zombies_comiendo(bool comiendo); //con los zombies atacando
 void audio_derrota(void); //cuando perdemos
-void audio_cerrar(void); // cuando termine el codigo
 
 #endif
