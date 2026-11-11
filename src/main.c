@@ -69,7 +69,7 @@ int main(){
 
             if(estadoJuego == PLAY && evento.type == SDL_EVENT_MOUSE_BUTTON_DOWN && evento.button.button == SDL_BUTTON_LEFT){
                 if(evento.button.x >= MARGEN_X && evento.button.y >= MARGEN_Y){
-                    int col = (int)((evento.button.x - MARGEN_X) / ANCHO_CELDA) + 1;
+                    int col = (int)((evento.button.x - MARGEN_X) / ANCHO_CELDA);
                     int fila = (int)((evento.button.y - MARGEN_Y) / ALTO_CELDA);
                     plantar(planta_elegida, fila, col);
                 }
