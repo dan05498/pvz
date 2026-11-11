@@ -56,4 +56,22 @@ void cargar_configuracion(struct configuracion *cfg, const char *ruta){
     }
 
     fclose(archivo_mapa);
+
+//cargar base 
+    void cargar_base(int base[5][11], int *filas2, int *columnas2, const char *ruta1){
+    FILE *archivo_base = fopen(ruta1,"r"); // se abre en modo lectura
+    if(archivo_base == NULL){
+        printf("no se cargo la base"); //esto puede deberse a la ruta normalmente
+        return; //void
+    }
+
+    fscanf(archivo_base, "%d %d", filas2, columnas2);
+
+    for(int i=0; i<*filas2;i++){//asi nos basamos en el puntero
+        for(int j=0;j<*columnas2;j++){
+            fscanf(archivo_base, "%d", &base[i][j]);
+        }
+    }
+
+    fclose(archivo_base);
  }
