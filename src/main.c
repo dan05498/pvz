@@ -44,7 +44,7 @@ int main(){
     int planta_elegida = GIRASOL;
     Uint64 ultimo_turno = 0;
     Uint64 ahora = 0;
-    Uint64 ms_por_turno = 500;
+    Uint64 ms_por_turno = 2000;
 
     while(jugando){
 
