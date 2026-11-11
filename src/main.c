@@ -22,11 +22,11 @@ int main(){
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-    }
+    };
 
     //funciones:
-    cargar_configuracion(&cfg, "../config/config.txt");
-    iniciar_logica(&cfg);
+    // cargar_configuracion(&cfg, "../config/config.txt");
+    // iniciar_logica(&cfg);
 
     if(!audio_iniciar()) return 1;
 

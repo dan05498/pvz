@@ -39,6 +39,6 @@ void loopVisuales(float);
 
 bool animacionInicio(float*);
 
-void imprimirTextura(int);
+void imprimirTextura(int, SDL_FRect);
 
 #endif

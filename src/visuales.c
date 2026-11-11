@@ -1,4 +1,5 @@
 #include "../include/visuales.h"
+#include "../include/logica.h"
 
 static SDL_Window *ventana = NULL;
 static SDL_Renderer *renderizador = NULL;
@@ -8,7 +9,7 @@ static SDL_Texture *lanzaguisantes_textura0 = NULL;
 static SDL_Texture *nuez_textura0 = NULL;
 static SDL_Texture *nuez_textura1 = NULL;
 static SDL_Texture *nuez_textura2 = NULL;
-static SDL_Texture *zombie_textura0 = NULL;
+static SDL_Texture *zombi_textura0 = NULL;
 
 
 bool inicializarVisuales(void) {
@@ -27,7 +28,7 @@ bool inicializarVisuales(void) {
     SDL_SetRenderDrawBlendMode(renderizador, SDL_BLENDMODE_BLEND);
 
     //Carga de texturas:
-    
+
     fondo1 = cargarTextura("assets/fondo1.png");
     if(!fondo1){
         return false;
@@ -136,6 +137,17 @@ void loopVisuales(float pos_camara_x){
         }
     }
 
+    for (int fila = 0;fila < FILAS_JUEGO;fila++) {
+        for (int columna = 0; columna < COLUMNAS_JUEGO;columna++){    
+            SDL_FRect rectangulo;
+            rectangulo.x = (float)(columna * ANCHO_CELDA);
+            rectangulo.y = (float)(fila * ALTO_CELDA);
+            rectangulo.w = (float)ANCHO_CELDA;
+            rectangulo.h = (float)ALTO_CELDA;
+            imprimirTextura(obtener_celda(fila, columna), rectangulo);
+        }
+    }
+
     presentarPantalla();
 }
 
@@ -149,6 +161,15 @@ bool animacionInicio(float *pos_camara_x){
     return true;
 }
 
-void imprimirTextura(int valor){
-    
+void imprimirTextura(int planta, SDL_FRect rectangulo){
+    switch (planta) {
+        case GIRASOL:
+            SDL_RenderTexture(renderizador, girasol_textura0, NULL, &rectangulo);
+
+        case LANZAGUISANTES:
+            SDL_RenderTexture(renderizador, lanzaguisantes_textura0, NULL, &rectangulo);
+        
+        case NUEZ:
+            SDL_RenderTexture(renderizador, nuez_textura0, NULL, &rectangulo);
+    }
 }
