@@ -2,7 +2,12 @@
 
 static SDL_Window *ventana = NULL;
 static SDL_Renderer *renderizador = NULL;
-static SDL_Texture *fondo1 = NULL;           
+static SDL_Texture *fondo1 = NULL;    
+static SDL_Texture *girasol_textura = NULL;
+static SDL_Texture *lanzaguisantes_textura = NULL;
+static SDL_Texture *nuez_textura = NULL;
+static SDL_Texture *zombie_textura = NULL;
+
 
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 
@@ -12,7 +17,7 @@ bool inicializarVisuales(void) {
         return false;
     }
 
-    if(!SDL_CreateWindowAndRenderer("PVZ", (int)ANCHO, (int)ALTO, 0, &ventana, &renderizador)){
+    if(!SDL_CreateWindowAndRenderer(NOMBRE_VENTANA, (int)ANCHO, (int)ALTO, 0, &ventana, &renderizador)){
         SDL_Log("Error en ventana: %s", SDL_GetError());
         return false;
     }
@@ -21,6 +26,10 @@ bool inicializarVisuales(void) {
 
     fondo1 = cargarTextura("assets/fondo1.png");
     if(!fondo1){
+        return false;
+    }
+    lanzaguisantes_textura = cargarTextura("assets/lanzaguisantes_textura.png");
+    if(!lanzaguisantes_textura){
         return false;
     }
 
@@ -114,4 +123,8 @@ bool animacionInicio(float *pos_camara_x){
             return false;
         }
     return true;
+}
+
+void imprimirTextura(int valor){
+    
 }

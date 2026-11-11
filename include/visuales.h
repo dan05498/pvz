@@ -6,11 +6,13 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <stdbool.h>
 
+#define NOMBRE_VENTANA  "pvz"
+
 #define ANCHO 800.0f
 #define ALTO 600.0f
 
 #define FILAS 5
-#define COLUMNAS 10
+#define COLUMNAS 11
 
 #define MARGEN_X -31.0f
 #define MARGEN_Y 86.0f
@@ -36,5 +38,7 @@ void RenderizarCuadriculaDebug(SDL_Renderer* renderer);
 void loopVisuales(float);
 
 bool animacionInicio(float*);
+
+void imprimirTextura(int);
 
 #endif

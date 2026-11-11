@@ -16,6 +16,14 @@ typedef enum {
 int main(){
     struct configuracion cfg;
 
+    int mapa[9][11] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    }
+
     //funciones:
     // cargar_configuracion(&cfg, "../config/config.txt");
     // cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
