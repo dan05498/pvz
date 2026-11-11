@@ -3,10 +3,12 @@
 static SDL_Window *ventana = NULL;
 static SDL_Renderer *renderizador = NULL;
 static SDL_Texture *fondo1 = NULL;    
-static SDL_Texture *girasol_textura = NULL;
-static SDL_Texture *lanzaguisantes_textura = NULL;
-static SDL_Texture *nuez_textura = NULL;
-static SDL_Texture *zombie_textura = NULL;
+static SDL_Texture *girasol_textura0 = NULL;
+static SDL_Texture *lanzaguisantes_textura0 = NULL;
+static SDL_Texture *nuez_textura0 = NULL;
+static SDL_Texture *nuez_textura1 = NULL;
+static SDL_Texture *nuez_textura2 = NULL;
+static SDL_Texture *zombie_textura0 = NULL;
 
 
 bool inicializarVisuales(void) {
@@ -24,12 +26,34 @@ bool inicializarVisuales(void) {
 
     SDL_SetRenderDrawBlendMode(renderizador, SDL_BLENDMODE_BLEND);
 
+    //Carga de texturas:
+    
     fondo1 = cargarTextura("assets/fondo1.png");
     if(!fondo1){
         return false;
     }
-    lanzaguisantes_textura = cargarTextura("assets/lanzaguisantes_textura.png");
-    if(!lanzaguisantes_textura){
+    lanzaguisantes_textura0 = cargarTextura("assets/lanzaguisantes_textura0.png");
+    if(!lanzaguisantes_textura0){
+        return false;
+    }
+    girasol_textura0 = cargarTextura("assets/girasol_textura0.png");
+    if(!girasol_textura0){
+        return false;
+    }
+    nuez_textura0 = cargarTextura("assets/nuez_textura0.png");
+    if(!nuez_textura0){
+        return false;
+    }
+    nuez_textura1 = cargarTextura("assets/nuez_textura1.png");
+    if(!nuez_textura1){
+        return false;
+    }
+    nuez_textura2 = cargarTextura("assets/nuez_textura2.png");
+    if(!nuez_textura2){
+        return false;
+    }
+    zombi_textura0 = cargarTextura("assets/zombi_textura0.png");
+    if(!zombi_textura0){
         return false;
     }
 

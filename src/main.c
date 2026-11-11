@@ -30,14 +30,6 @@ int main(){
 
     if(!audio_iniciar()) return 1;
 
-   /*para que funcione:
-cd ~/pvz/pvz
-./compilar.sh
-cd src
-../pvz
-*/
-
-
     //Arranque de Visuales:
     if(!inicializarVisuales()){
         return 1;
