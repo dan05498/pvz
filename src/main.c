@@ -25,8 +25,8 @@ int main(){
     }
 
     //funciones:
-    // cargar_configuracion(&cfg, "../config/config.txt");
-    // cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
+    cargar_configuracion(&cfg, "../config/config.txt");
+    iniciar_logica(&cfg);
 
     if(!audio_iniciar()) return 1;
 
@@ -49,6 +49,11 @@ cd src
     bool jugando = true;
     estado estadoJuego = INTRO;
 
+    int planta_elegida = GIRASOL;
+    Uint64 ultimo_turno = 0;
+    Uint64 ahora = 0;
+    Uint64 ms_por_turno = 500;
+
     while(jugando){
 
         //Eventos (Entradas)
@@ -56,6 +61,26 @@ cd src
         while(SDL_PollEvent(&evento)){
             if(evento.type == SDL_EVENT_QUIT){  //Botón de cerrar
                 jugando = false;
+            }
+
+            if(estadoJuego == PLAY && evento.type == SDL_EVENT_KEY_DOWN){
+                if(evento.key.key == SDLK_1){
+                    planta_elegida = GIRASOL;
+                }
+                if(evento.key.key == SDLK_2){
+                    planta_elegida = LANZAGUISANTES;
+                }
+                if(evento.key.key == SDLK_3){
+                    planta_elegida = NUEZ;
+                }
+            }
+
+            if(estadoJuego == PLAY && evento.type == SDL_EVENT_MOUSE_BUTTON_DOWN && evento.button.button == SDL_BUTTON_LEFT){
+                if(evento.button.x >= MARGEN_X && evento.button.y >= MARGEN_Y){
+                    int col = (int)((evento.button.x - MARGEN_X) / ANCHO_CELDA) + 1;
+                    int fila = (int)((evento.button.y - MARGEN_Y) / ALTO_CELDA);
+                    plantar(planta_elegida, fila, col);
+                }
             }
         }
 
@@ -65,11 +90,26 @@ cd src
                 break;
             case INTRO:
                 if (!animacionInicio(&pos_camara_x)){
-                    estadoJuego = PLAY;    
+                    estadoJuego = PLAY;
+                    ultimo_turno = SDL_GetTicks();    
                 }
                 loopVisuales(pos_camara_x);
                 break;
             case PLAY:
+                ahora = SDL_GetTicks();
+                if(ahora - ultimo_turno >= ms_por_turno){
+                    actualizar_juego();
+                    ultimo_turno = ahora;
+                }
+
+                if(estado_juego() == VICTORIA){
+                    printf("Ganaste\n");    //por ahora donde no hay pantalla de victoria xD
+                    estadoJuego = VICTORY;
+                }
+                if(estado_juego() == DERROTA){
+                    printf("Perdiste\n");
+                    estadoJuego = DEFEAT;
+                }
 
 
 
