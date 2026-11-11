@@ -10,6 +10,7 @@ static SDL_Texture *nuez_textura0 = NULL;
 static SDL_Texture *nuez_textura1 = NULL;
 static SDL_Texture *nuez_textura2 = NULL;
 static SDL_Texture *zombi_textura0 = NULL;
+static SDL_Texture *guisante_textura0 = NULL;
 
 
 bool inicializarVisuales(void) {
@@ -55,6 +56,10 @@ bool inicializarVisuales(void) {
     }
     zombi_textura0 = cargarTextura("assets/zombi_textura0.png");
     if(!zombi_textura0){
+        return false;
+    }
+    guisante_textura0 = cargarTextura("assets/guisante_textura0.png");
+    if(!guisante_textura0){
         return false;
     }
 
@@ -165,11 +170,19 @@ void imprimirTextura(int planta, SDL_FRect rectangulo){
     switch (planta) {
         case GIRASOL:
             SDL_RenderTexture(renderizador, girasol_textura0, NULL, &rectangulo);
-
+            break;
         case LANZAGUISANTES:
             SDL_RenderTexture(renderizador, lanzaguisantes_textura0, NULL, &rectangulo);
-        
+            break;
         case NUEZ:
             SDL_RenderTexture(renderizador, nuez_textura0, NULL, &rectangulo);
+            break;
+        case ZOMBIE:
+        case FLAG_ZOMBIE:
+            SDL_RenderTexture(renderizador, zombi_textura0, NULL, &rectangulo);
+            break;
+        case GUISANTE:
+            SDL_RenderTexture(renderizador, guisante_textura0, NULL, &rectangulo);
+            break;
     }
 }
