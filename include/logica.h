@@ -4,7 +4,7 @@
 #include "entradas.h"
 
 #define FILAS_JUEGO      5    //Filas y columnas donde se jugará
-#define COLUMNAS_JUEGO   10
+#define COLUMNAS_JUEGO   11
 
 #define PASTO            0
 #define GIRASOL          1    //Plantas
