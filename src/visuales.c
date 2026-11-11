@@ -145,8 +145,8 @@ void loopVisuales(float pos_camara_x){
     for (int fila = 0;fila < FILAS_JUEGO;fila++) {
         for (int columna = 0; columna < COLUMNAS_JUEGO;columna++){    
             SDL_FRect rectangulo;
-            rectangulo.x = (float)(columna * ANCHO_CELDA);
-            rectangulo.y = (float)(fila * ALTO_CELDA);
+            rectangulo.x = (float)(MARGEN_X + columna * ANCHO_CELDA);
+            rectangulo.y = (float)(MARGEN_Y + fila * ALTO_CELDA);
             rectangulo.w = (float)ANCHO_CELDA;
             rectangulo.h = (float)ALTO_CELDA;
             imprimirTextura(obtener_celda(fila, columna), rectangulo);
