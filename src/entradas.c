@@ -56,6 +56,7 @@ void cargar_configuracion(struct configuracion *cfg, const char *ruta){
     }
 
     fclose(archivo_mapa);
+ }
 
 //cargar base 
     void cargar_base(int base[5][11], int *filas2, int *columnas2, const char *ruta1){
