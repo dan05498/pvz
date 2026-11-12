@@ -137,10 +137,6 @@ void loopVisuales(float pos_camara_x){
 
     if(fondo1) {
         RenderizarFondo(renderizador, fondo1, pos_camara_x);
-        
-        if (pos_camara_x == POS_CAMARA_JUGANDO) {
-            RenderizarCuadriculaDebug(renderizador);
-        }
     }
 
     for (int fila = 0;fila < FILAS_JUEGO;fila++) {
