@@ -30,7 +30,6 @@ void cerrarSDL(void);
 SDL_Texture *cargarTextura(const char *archivo);
 void prepararFondo(void); // Pinta de gris la pantalla antes de dibujar
 void RenderizarFondo(SDL_Renderer*, SDL_Texture*, float);
-void presentarPantalla(void); // Actualiza la pantalla
 
 //Prueba de la cuadrícula
 void RenderizarCuadriculaDebug(SDL_Renderer* renderer);

@@ -98,11 +98,6 @@ void RenderizarFondo(SDL_Renderer* renderizador, SDL_Texture* fondo1, float pos_
     SDL_RenderTexture(renderizador, fondo1, &rect_origen, &rect_destino);
 }
 
-void presentarPantalla(void) {
-    SDL_RenderPresent(renderizador);
-    SDL_Delay(16);
-}
-
 void RenderizarCuadriculaDebug(SDL_Renderer* renderizador) {
     SDL_SetRenderDrawColor(renderizador, 255, 0, 0, 255); 
 
@@ -125,6 +120,34 @@ void cerrarSDL(void) {
     if(fondo1) {
         SDL_DestroyTexture(fondo1); 
         fondo1 = NULL;
+    }
+    if(lanzaguisantes_textura0) {
+        SDL_DestroyTexture(lanzaguisantes_textura0); 
+        lanzaguisantes_textura0 = NULL;
+    }
+    if(girasol_textura0) {
+        SDL_DestroyTexture(girasol_textura0); 
+        girasol_textura0 = NULL;
+    }
+    if(nuez_textura0) {
+        SDL_DestroyTexture(nuez_textura0); 
+        nuez_textura0 = NULL;
+    }
+    if(nuez_textura1) {
+        SDL_DestroyTexture(nuez_textura1); 
+        nuez_textura1 = NULL;
+    }
+    if(nuez_textura2) {
+        SDL_DestroyTexture(nuez_textura2); 
+        nuez_textura2 = NULL;
+    }
+    if(zombi_textura0) {
+        SDL_DestroyTexture(zombi_textura0); 
+        zombi_textura0 = NULL;
+    }
+    if(guisante_textura0) {
+        SDL_DestroyTexture(guisante_textura0); 
+        guisante_textura0 = NULL;
     }
     if(renderizador) SDL_DestroyRenderer(renderizador);
     if(ventana) SDL_DestroyWindow(ventana);
@@ -153,7 +176,8 @@ void loopVisuales(float pos_camara_x){
         }
     }
 
-    presentarPantalla();
+    SDL_RenderPresent(renderizador);
+    SDL_Delay(16);
 }
 
 bool animacionInicio(float *pos_camara_x){
