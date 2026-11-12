@@ -8,7 +8,7 @@ static MIX_Track *track_comer = NULL;
 static MIX_Audio *efectos[SFX_Total];
 static bool comiendo_activo = false;
 
-#define RUTA_MUSICA"assets/pvz_soundtrack1.mp3"
+#define RUTA_MUSICA     "assets/pvz_soundtrack1.mp3"
 
 static void reproducir_en_bucle(MIX_Track *t){
     SDL_PropertiesID opciones = SDL_CreateProperties();
