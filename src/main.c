@@ -62,8 +62,10 @@ cd src
                 if(evento.key.key == SDLK_ESCAPE){ // asignamos la tecla escape
                     if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos pausa
                         estadoJuego = PAUSA;
+                        audio_pausar(true); //aprovechando pausamos la musica
                     } else if(estadoJuego == PAUSA){// si el estado de juego esta en pausa le ponemos play 
                         estadoJuego = PLAY;
+                        audio_pausar(false);//reanudamos la musica 
                     }
                 }
             }

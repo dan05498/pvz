@@ -49,3 +49,11 @@ bool audio_iniciar(void){
         if(e < 0 || e>=SFX_Total)return;
         MIX_PlayAudio(mixer, efectos[e]);
     }
+
+    void audio_pausar(bool pausado){
+        if(pausado){
+            MIX_PauseTrack(track_musica); // para pausar
+        }else{
+            MIX_ResumeTrack(track_musica); // de lo contrario sigue 
+        }
+    }
