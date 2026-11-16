@@ -59,10 +59,10 @@ cd src
 
             //para ponerle pausa: 
             if(evento.type == SDL_EVENT_KEY_DOWN){ // hacemos el evento
-                if(evento.key.key == SDLK_P){ // asignamos la tecla p
-                    if(estadoJuego == PLAY){ // sie el estado de juego esta en play le ponemos pausa
+                if(evento.key.key == SDLK_ESCAPE){ // asignamos la tecla escape
+                    if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos pausa
                         estadoJuego = PAUSA;
-                    } else if(estadoJuego == PAUSA){ // si el estado de juego esta en pausa le ponemos play 
+                    } else if(estadoJuego == PAUSA){// si el estado de juego esta en pausa le ponemos play 
                         estadoJuego = PLAY;
                     }
                 }
