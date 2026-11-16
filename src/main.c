@@ -19,8 +19,18 @@ int main(){
     //funciones:
     cargar_configuracion(&cfg, "config/config.txt");
     iniciar_logica(&cfg);
+    // cargar_mapa(mapa, &filas, &columnas, "../config/mapa.txt");
+    // cargar_base(base, &filas2, &columnas2, "../config/base.txt");
 
     if(!audio_iniciar()) return 1;
+
+   /*para que funcione:
+cd ~/pvz/pvz
+./compilar.sh
+cd src
+../pvz
+*/
+
 
     //Arranque de Visuales:
     if(!inicializarVisuales()){
@@ -45,6 +55,17 @@ int main(){
         while(SDL_PollEvent(&evento)){
             if(evento.type == SDL_EVENT_QUIT){  //Botón de cerrar
                 jugando = false;
+            }
+
+            //para ponerle pausa: 
+            if(evento.type == SDL_EVENT_KEY_DOWN){ // hacemos el evento
+                if(evento.key.key == SDLK_P){ // asignamos la tecla p
+                    if(estadoJuego == PLAY){ // sie el estado de juego esta en play le ponemos pausa
+                        estadoJuego = PAUSA;
+                    } else if(estadoJuego == PAUSA){ // si el estado de juego esta en pausa le ponemos play 
+                        estadoJuego = PLAY;
+                    }
+                }
             }
 
             if(estadoJuego == PLAY && evento.type == SDL_EVENT_KEY_DOWN){
@@ -77,6 +98,7 @@ int main(){
                     estadoJuego = PLAY;
                     ultimo_turno = SDL_GetTicks();    
                 }
+                loopVisuales(pos_camara_x);
                 break;
             case PLAY:
                 ahora = SDL_GetTicks();
