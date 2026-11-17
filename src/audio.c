@@ -13,6 +13,7 @@ static bool comiendo_activo = false;
 
 #define RUTA_MUSICA     "assets/pvz_soundtrack1.mp3" //asignamos la cancion
 #define RUTA_SONIDO_ZOMBIES "assets/pvz_zombTrack.mp3" //el sonido de los zombies 
+#define RUTA_ZOMBIE_COMIENDO "assets/pvz_zombComiendo.mp3" //el sonido de comer de los zombies
 
 
 static void reproducir_en_bucle(MIX_Track *t){
@@ -52,6 +53,10 @@ bool audio_iniciar(void){
     track_zombie = MIX_CreateTrack(mixer);
     MIX_SetTrackAudio(track_zombie, sonido_zombies);
 
+    MIX_Audio *sonido_zombie_comiendo = MIX_LoadAudio(mixer, RUTA_ZOMBIE_COMIENDO, false);
+    track_comer = MIX_CreateTrack(mixer);
+    MIX_SetTrackAudio(track_comer, sonido_zombie_comiendo);
+
     return true;
 }
 
@@ -77,5 +82,15 @@ bool audio_iniciar(void){
         } else if(!hay_zombie && zombies_activo){ // lo contrario de lo de arriba
             MIX_StopTrack(track_zombie, 0);
             zombies_activo = false;
+        }
+    }
+
+    void audio_zombies_comiendo(bool zombie_comiendo){
+        if(zombie_comiendo && !comiendo_activo){
+            reproducir_en_bucle(track_comer);
+            comiendo_activo = true;
+        } else if(!zombie_comiendo && comiendo_activo){
+            MIX_StopTrack(track_comer, 0);
+            comiendo_activo = false;
         }
     }

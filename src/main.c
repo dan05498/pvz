@@ -63,7 +63,8 @@ cd src
                     if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos pausa
                         estadoJuego = PAUSA;
                         audio_pausar(true); //aprovechando pausamos la musica
-                        audio_zombies(false);
+                        audio_zombies(false); // para el sonido de los zombies
+                        audio_zombies_comiendo(false); // paramos el sonido si los zombies estaban comiendo
                     } else if(estadoJuego == PAUSA){// si el estado de juego esta en pausa le ponemos play 
                         estadoJuego = PLAY;
                         audio_pausar(false);//reanudamos la musica
@@ -122,6 +123,7 @@ cd src
                 }
                 audio_zombies(hay_zombie());//osea mientras este el juego activo en PLay usamos el audio si hay zombies
 
+                audio_zombies_comiendo(hay_zombie_comiendo()); // se parentesis de dentro es para usar el bool igual que hay zombie
 
 
                 

@@ -229,6 +229,17 @@ static void mover_zombies(void) {  //para que zombie avanze cada X turnos
     }
 }
 
+bool hay_zombie_comiendo(void){
+    for(int f=0; f<FILAS_JUEGO ; f++){ //recorre filas
+        for(int c=1; c<COLUMNAS_JUEGO; c++){ //recorre columnas
+            if(es_zombie(jardin[f][c]) && es_planta(jardin[f][c-1])){ // si la es zombie tiene un es planta al lado significa que le quitara vida por lo tanto podemos modificar el booleando para que suene el sonido de comida
+                return true; // cambia el bool a true
+            }
+        }
+    }
+    return false; // lo contrario
+}
+
 
 static int aparecer_zombie(void) {  //aparece zombie
     int f = rand() % FILAS_JUEGO;	//fila donde aparecera

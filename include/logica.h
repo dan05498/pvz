@@ -40,6 +40,6 @@ int costo_planta(int tipo);
 
 
 bool hay_zombie(void);
-bool zombie_comiendo(void);
+bool hay_zombie_comiendo(void);
 
 #endif
