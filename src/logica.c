@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "../include/logica.h"
+#include "../include/audio.h" // para los sfx osea los efectos de sonido
 
 #define EN_PREPARACION   0
 #define EN_OLEADA        1
@@ -70,6 +71,10 @@ static int contar_zombies(void) {   //Contamos zombies para saber cuánto queda 
     return total;
 }
 
+bool hay_zombie(void){ // validar si hay zombies
+    return contar_zombies() > 0; // ese cero va en relacion con lo del audio 
+}
+
 static int hay_zombie_a_la_derecha(int f, int c) {  //sabemos si el lanzaguisante dispara
     for (int k = c + 1; k < COLUMNAS_JUEGO; k++) {
         if (es_zombie(jardin[f][k])) {
@@ -135,7 +140,7 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
         return 0;
     }
     soles -= costo_planta(tipo);   //nos restamos el costo de la planta 
-    jardin[fila][col] = tipo;		//ponemos la planta en la matriz
+    jardin[fila][col] = tipo;audio_reproducir(SFX_Plantar);		//ponemos la planta en la matriz
     vida[fila][col] = vida_inicial(tipo);	//ponemos la vida de la planta
     return 1;
 }
@@ -144,12 +149,14 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
 static void generar_soles(void) {
     if (turno % config.CADA_SOL_AUTOMATICO == 0) {   //se genera sol autom cada X turnos
         soles += config.SOLES_AUTOMATICO;
+        audio_reproducir(SFX_Sol);
     }
     if (turno % config.CADA_SOL_GIRASOL == 0) {   //se genera sol de girasol cada X turnos
         for (int f = 0; f < FILAS_JUEGO; f++) {
             for (int c = 1; c < COLUMNAS_JUEGO; c++) {
                 if (jardin[f][c] == GIRASOL) {
                     soles += config.SOLES_GIRASOL;
+                    audio_reproducir(SFX_Sol);
                 }
             }
         }
@@ -190,6 +197,7 @@ static void disparar_plantas(void) {   //Si estamos en turno de disparo el lanza
         for (int c = 1; c < COLUMNAS_JUEGO; c++) { //recorremos la matriz, si es lanzaguisante y hay zombie dispara
             if (jardin[f][c] == LANZAGUISANTES && hay_zombie_a_la_derecha(f, c)) {
                 llegar_guisante(f, c + 1); 
+                audio_reproducir(SFX_Guizante);
             }
         }
     }
@@ -225,6 +233,17 @@ static void mover_zombies(void) {  //para que zombie avanze cada X turnos
     }
 }
 
+bool hay_zombie_comiendo(void){
+    for(int f=0; f<FILAS_JUEGO ; f++){ //recorre filas
+        for(int c=1; c<COLUMNAS_JUEGO; c++){ //recorre columnas
+            if(es_zombie(jardin[f][c]) && es_planta(jardin[f][c-1])){ // si la es zombie tiene un es planta al lado significa que le quitara vida por lo tanto podemos modificar el booleando para que suene el sonido de comida
+                return true; // cambia el bool a true
+            }
+        }
+    }
+    return false; // lo contrario
+}
+
 
 static int aparecer_zombie(void) {  //aparece zombie
     int f = rand() % FILAS_JUEGO;	//fila donde aparecera
@@ -243,6 +262,7 @@ static int aparecer_zombie(void) {  //aparece zombie
 }
 
 static void empezar_oleada(void) {  //si empieza la oleada
+    audio_reproducir(SFX_Oleada);
     oleada++;
     fase = EN_OLEADA;
     zombies_por_salir = 3 * oleada + 2;  //cantidad de zombies q aparecen x oleada
