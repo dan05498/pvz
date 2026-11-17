@@ -61,11 +61,11 @@ cd src
             if(evento.type == SDL_EVENT_KEY_DOWN){ // hacemos el evento
                 if(evento.key.key == SDLK_ESCAPE){ // asignamos la tecla escape
                     if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos pausa
-                        estadoJuego = PAUSA;
+                        estadoJuego = PAUSE;
                         audio_pausar(true); //aprovechando pausamos la musica
                         audio_zombies(false); // para el sonido de los zombies
                         audio_zombies_comiendo(false); // paramos el sonido si los zombies estaban comiendo
-                    } else if(estadoJuego == PAUSA){// si el estado de juego esta en pausa le ponemos play 
+                    } else if(estadoJuego == PAUSE){// si el estado de juego esta en pausa le ponemos play 
                         estadoJuego = PLAY;
                         audio_pausar(false);//reanudamos la musica
                         audio_zombies(hay_zombie()); 
@@ -103,7 +103,6 @@ cd src
                     estadoJuego = PLAY;
                     ultimo_turno = SDL_GetTicks();    
                 }
-                loopVisuales(pos_camara_x);
                 audio_zombies(false);
                 break;
             case PLAY:
@@ -124,9 +123,8 @@ cd src
                 audio_zombies(hay_zombie());//osea mientras este el juego activo en PLay usamos el audio si hay zombies
 
                 audio_zombies_comiendo(hay_zombie_comiendo()); // se parentesis de dentro es para usar el bool igual que hay zombie
-
-
-                
+                break;
+            case PAUSE:
                 break;
         }
 
