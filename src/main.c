@@ -37,7 +37,7 @@ cd src
         return 1;
     }
 
-    float pos_camara_x = 640.0f;
+    float pos_camara_x = 500.0f;
 
     //Ciclo de juego:
     bool jugando = true;

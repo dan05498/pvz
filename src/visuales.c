@@ -188,8 +188,6 @@ void cerrarSDL(void) {
 void loopVisuales(float pos_camara_x, int estadoJuego){
     prepararFondo();
 
-    
-
     if(fondo1) {
         RenderizarFondo(renderizador, fondo1, pos_camara_x);
     }
