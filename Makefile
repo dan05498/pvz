@@ -4,7 +4,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -std=c11 -Iinclude
 
-LDFLAGS = -lSDL3 -lSDL3_image -lSDL3_mixer #Banderas para SLD3
+LDFLAGS = -lSDL3 -lSDL3_image -lSDL3_mixer -lSDL3_ttf #Banderas para SLD3
 
 SRC_DIR = src
 INC_DIR = include

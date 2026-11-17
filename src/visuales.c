@@ -3,7 +3,11 @@
 
 static SDL_Window *ventana = NULL;
 static SDL_Renderer *renderizador = NULL;
-static SDL_Texture *fondo1 = NULL;    
+
+static TTF_Font *fuente_costo = NULL;   // contb.ttf
+
+static SDL_Texture *fondo1 = NULL; 
+static SDL_Texture *fondoSelector = NULL;     
 static SDL_Texture *girasol_textura0 = NULL;
 static SDL_Texture *lanzaguisantes_textura0 = NULL;
 static SDL_Texture *nuez_textura0 = NULL;
@@ -15,12 +19,17 @@ static SDL_Texture *guisante_textura0 = NULL;
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 
 
-    if(!SDL_Init(SDL_INIT_VIDEO)){
+    if(!SDL_Init(SDL_INIT_VIDEO)){  //Inicialización SDL
         SDL_Log("Error al iniciar SDL: %s", SDL_GetError());
         return false;
     }
 
-    if(!SDL_CreateWindowAndRenderer(NOMBRE_VENTANA, (int)ANCHO, (int)ALTO, 0, &ventana, &renderizador)){
+    if (!TTF_Init()) {  //Inicialización de TTF (texto)
+        SDL_Log("Error al iniciar SDL_ttf: %s", SDL_GetError());
+        return false;
+    }
+
+    if(!SDL_CreateWindowAndRenderer(NOMBRE_VENTANA, (int)ANCHO, (int)ALTO, 0, &ventana, &renderizador)){    //Creación de ventana
         SDL_Log("Error en ventana: %s", SDL_GetError());
         return false;
     }
@@ -34,10 +43,20 @@ bool inicializarVisuales(void) {
         SDL_LOGICAL_PRESENTATION_LETTERBOX
     );
 
-    //Carga de texturas:
+    //Carga de la fuente:
+    fuente_costo = TTF_OpenFont("assets/contb.ttf", 24); // Tamaño 24
+    if (!fuente_costo) {
+        SDL_Log("Error al cargar la fuente: %s", SDL_GetError());
+        return false;
+    }
 
+    //Carga de texturas:
     fondo1 = cargarTextura("assets/fondo1.png");
     if(!fondo1){
+        return false;
+    }
+    fondoSelector = cargarTextura("assets/fondoSelector.png");
+    if(!fondoSelector){
         return false;
     }
     lanzaguisantes_textura0 = cargarTextura("assets/lanzaguisantes_textura0.png");
@@ -68,6 +87,7 @@ bool inicializarVisuales(void) {
     if(!guisante_textura0){
         return false;
     }
+    
 
     return true;
 }
@@ -126,6 +146,10 @@ void cerrarSDL(void) {
         SDL_DestroyTexture(fondo1); 
         fondo1 = NULL;
     }
+    if (fuente_costo) {
+        TTF_CloseFont(fuente_costo);
+        fuente_costo = NULL;
+    }
     if(lanzaguisantes_textura0) {
         SDL_DestroyTexture(lanzaguisantes_textura0); 
         lanzaguisantes_textura0 = NULL;
@@ -156,12 +180,15 @@ void cerrarSDL(void) {
     }
     if(renderizador) SDL_DestroyRenderer(renderizador);
     if(ventana) SDL_DestroyWindow(ventana);
+    TTF_Quit();
     MIX_Quit();
     SDL_Quit();
 }
 
 void loopVisuales(float pos_camara_x, int estadoJuego){
     prepararFondo();
+
+    
 
     if(fondo1) {
         RenderizarFondo(renderizador, fondo1, pos_camara_x);
@@ -193,6 +220,10 @@ void loopVisuales(float pos_camara_x, int estadoJuego){
     if(estadoJuego == 3){
         fondoPausa();
     }
+    
+    selectorPlantas();
+    dibujarSoles(obtener_soles());
+
     SDL_RenderPresent(renderizador);
     SDL_Delay(16);
 }
@@ -232,4 +263,52 @@ void fondoPausa(){
     SDL_SetRenderDrawColor(renderizador, 0, 0, 0, 128);
     SDL_FRect pantalla = {MARGEN_Y, MARGEN_X, ALTO, ANCHO};
     SDL_RenderFillRect(renderizador, &pantalla);
+}
+
+void selectorPlantas(){
+    SDL_FRect rectangulo = {
+        20.0f,
+        0.0f,
+        720.0f,
+        100.0f
+    };
+    SDL_RenderTexture(renderizador, fondoSelector, NULL, &rectangulo);
+}
+
+void dibujarSoles(int cantidad_soles) { 
+    if (!fuente_costo) return;
+
+    // Convertimos el número entero a string
+    char texto_soles[16];
+    snprintf(texto_soles, sizeof(texto_soles), "%d", cantidad_soles);
+
+    // Color del texto
+    SDL_Color color_texto = {0, 0, 0, 255};
+
+   // Superficie del texto
+    SDL_Surface *superficie_texto = TTF_RenderText_Blended(fuente_costo, texto_soles, 0, color_texto);
+    if (!superficie_texto) return;
+    
+    float ancho_texto = (float)superficie_texto->w;
+    float alto_texto = (float)superficie_texto->h;
+
+    SDL_Texture *textura_texto = SDL_CreateTextureFromSurface(renderizador, superficie_texto);
+
+    SDL_DestroySurface(superficie_texto);
+
+    if (!textura_texto) return;
+
+    
+    // Rectángulo de salida
+    SDL_FRect rect_destino = {
+        50.0f,  // Posición X 
+        70.0f,  // Posición Y
+        (float)ancho_texto, // Ancho de la textura generada
+        (float)alto_texto  // Alto de la textura generada
+    };
+
+    // Renderizar texto
+    SDL_RenderTexture(renderizador, textura_texto, NULL, &rect_destino);
+
+    SDL_DestroyTexture(textura_texto);
 }

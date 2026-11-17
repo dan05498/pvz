@@ -4,6 +4,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_mixer/SDL_mixer.h>
+#include <SDL3_ttf/SDL_ttf.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 #define NOMBRE_VENTANA  "pvz"
@@ -40,4 +42,6 @@ bool animacionInicio(float*);
 
 void imprimirTextura(int, SDL_FRect);
 void fondoPausa();
+void selectorPlantas();
+void dibujarSoles();
 #endif
