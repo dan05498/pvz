@@ -63,9 +63,11 @@ cd src
                     if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos pausa
                         estadoJuego = PAUSA;
                         audio_pausar(true); //aprovechando pausamos la musica
+                        audio_zombies(false);
                     } else if(estadoJuego == PAUSA){// si el estado de juego esta en pausa le ponemos play 
                         estadoJuego = PLAY;
-                        audio_pausar(false);//reanudamos la musica 
+                        audio_pausar(false);//reanudamos la musica
+                        audio_zombies(hay_zombie()); 
                     }
                 }
             }
@@ -101,6 +103,7 @@ cd src
                     ultimo_turno = SDL_GetTicks();    
                 }
                 loopVisuales(pos_camara_x);
+                audio_zombies(false);
                 break;
             case PLAY:
                 ahora = SDL_GetTicks();
@@ -117,6 +120,7 @@ cd src
                     printf("Perdiste\n");
                     estadoJuego = DEFEAT;
                 }
+                audio_zombies(hay_zombie());//osea mientras este el juego activo en PLay usamos el audio si hay zombies
 
 
 

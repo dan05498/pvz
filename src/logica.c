@@ -70,6 +70,10 @@ static int contar_zombies(void) {   //Contamos zombies para saber cuánto queda 
     return total;
 }
 
+bool hay_zombie(void){ // validar si hay zombies
+    return contar_zombies() > 0; // ese cero va en relacion con lo del audio 
+}
+
 static int hay_zombie_a_la_derecha(int f, int c) {  //sabemos si el lanzaguisante dispara
     for (int k = c + 1; k < COLUMNAS_JUEGO; k++) {
         if (es_zombie(jardin[f][k])) {

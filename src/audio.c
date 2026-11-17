@@ -1,14 +1,19 @@
 #include <SDL3/SDL.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include "../include/audio.h" 
+#include <logica.h> // para icluir los sonidos de los zombies
 
 static MIX_Mixer *mixer = NULL;
 static MIX_Track *track_musica = NULL;
 static MIX_Track *track_comer = NULL;
 static MIX_Audio *efectos[SFX_Total];
+static MIX_Track *track_zombie = NULL;
+static bool zombies_activo = false;
 static bool comiendo_activo = false;
 
-#define RUTA_MUSICA     "assets/pvz_soundtrack1.mp3"
+#define RUTA_MUSICA     "assets/pvz_soundtrack1.mp3" //asignamos la cancion
+#define RUTA_SONIDO_ZOMBIES "assets/pvz_zombTrack.mp3" //el sonido de los zombies 
+
 
 static void reproducir_en_bucle(MIX_Track *t){
     SDL_PropertiesID opciones = SDL_CreateProperties();
@@ -42,6 +47,11 @@ bool audio_iniciar(void){
     MIX_SetTrackAudio(track_musica, musica);
     reproducir_en_bucle(track_musica);
 
+    //sonido zombies
+    MIX_Audio *sonido_zombies = MIX_LoadAudio(mixer, RUTA_SONIDO_ZOMBIES, false);
+    track_zombie = MIX_CreateTrack(mixer);
+    MIX_SetTrackAudio(track_zombie, sonido_zombies);
+
     return true;
 }
 
@@ -53,7 +63,19 @@ bool audio_iniciar(void){
     void audio_pausar(bool pausado){
         if(pausado){
             MIX_PauseTrack(track_musica); // para pausar
+            MIX_PauseTrack(track_zombie);
         }else{
             MIX_ResumeTrack(track_musica); // de lo contrario sigue 
+            MIX_ResumeTrack(track_zombie);
+        }
+    }
+
+    void audio_zombies(bool hay_zombie){
+        if(hay_zombie && !zombies_activo){ // osea mientras hay zombies y el zombie activo que era false ahora se niegue osea sea verdadero
+            reproducir_en_bucle(track_zombie);
+            zombies_activo = true;
+        } else if(!hay_zombie && zombies_activo){ // lo contrario de lo de arriba
+            MIX_StopTrack(track_zombie, 0);
+            zombies_activo = false;
         }
     }

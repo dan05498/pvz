@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #ifndef LOGICA_H
 #define LOGICA_H
 
@@ -36,5 +37,9 @@ int obtener_vida_casa(void);
 int obtener_oleada(void);
 int obtener_total_oleadas(void);
 int costo_planta(int tipo);
+
+
+bool hay_zombie(void);
+bool zombie_comiendo(void);
 
 #endif

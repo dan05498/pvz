@@ -16,5 +16,6 @@ void audio_reproducir(Efecto e);    //superponer
 void audio_zombies_comiendo(bool comiendo); //con los zombies atacando
 void audio_derrota(void); //cuando perdemos
 void audio_pausar(bool pausado); // para pausar y poner play usando bool si esta pausado es true si no es false
+void audio_zombies(bool zombie);
 
 #endif
