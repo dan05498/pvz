@@ -57,10 +57,21 @@ bool audio_iniciar(void){
     track_comer = MIX_CreateTrack(mixer);
     MIX_SetTrackAudio(track_comer, sonido_zombie_comiendo);
 
+    //ahora para los efectos mas simples o no loop usaremos los sfx de audio.h seguir el orden
+
+    efectos[SFX_Plantar] = MIX_LoadAudio(mixer, "assets/plant.mp3", true); // el true significa que tendra guardado el sonido y asi no se reproduce con lag pero esto gasta mas ram que false aunque false puede dar lag
+    efectos[SFX_Sol] = MIX_LoadAudio(mixer, "assets/pvz_sol.mp3", true);
+    efectos[SFX_Guizante] = MIX_LoadAudio(mixer, "assets/pvz_guisante.mp3", true);
+    efectos[SFX_Derrota] = MIX_LoadAudio(mixer, "assets/pvz_Derrota.mp3", true);
+    efectos[SFX_Victoria] = MIX_LoadAudio(mixer, "assets/pvz_Victoria.mp3", true);
+
+
+    
+
     return true;
 }
 
-    void audio_reporducir(Efecto e){
+    void audio_reproducir(efecto e){
         if(e < 0 || e>=SFX_Total)return;
         MIX_PlayAudio(mixer, efectos[e]);
     }
@@ -80,7 +91,7 @@ bool audio_iniciar(void){
             reproducir_en_bucle(track_zombie);
             zombies_activo = true;
         } else if(!hay_zombie && zombies_activo){ // lo contrario de lo de arriba
-            MIX_StopTrack(track_zombie, 0);
+            MIX_StopTrack(track_zombie, 0); // para que no se repita 0 
             zombies_activo = false;
         }
     }
@@ -90,7 +101,8 @@ bool audio_iniciar(void){
             reproducir_en_bucle(track_comer);
             comiendo_activo = true;
         } else if(!zombie_comiendo && comiendo_activo){
-            MIX_StopTrack(track_comer, 0);
+            MIX_StopTrack(track_comer, 0); // lo mismo que track zombie
             comiendo_activo = false;
         }
     }
+

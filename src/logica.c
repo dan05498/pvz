@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "../include/logica.h"
+#include "../include/audio.h" // para los sfx osea los efectos de sonido
 
 #define EN_PREPARACION   0
 #define EN_OLEADA        1
@@ -194,6 +195,7 @@ static void disparar_plantas(void) {   //Si estamos en turno de disparo el lanza
         for (int c = 1; c < COLUMNAS_JUEGO; c++) { //recorremos la matriz, si es lanzaguisante y hay zombie dispara
             if (jardin[f][c] == LANZAGUISANTES && hay_zombie_a_la_derecha(f, c)) {
                 llegar_guisante(f, c + 1); 
+                audio_reproducir(SFX_Guizante);
             }
         }
     }
