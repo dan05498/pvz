@@ -149,12 +149,14 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
 static void generar_soles(void) {
     if (turno % config.CADA_SOL_AUTOMATICO == 0) {   //se genera sol autom cada X turnos
         soles += config.SOLES_AUTOMATICO;
+        audio_reproducir(SFX_Sol);
     }
     if (turno % config.CADA_SOL_GIRASOL == 0) {   //se genera sol de girasol cada X turnos
         for (int f = 0; f < FILAS_JUEGO; f++) {
             for (int c = 1; c < COLUMNAS_JUEGO; c++) {
                 if (jardin[f][c] == GIRASOL) {
                     soles += config.SOLES_GIRASOL;
+                    audio_reproducir(SFX_Sol);
                 }
             }
         }
