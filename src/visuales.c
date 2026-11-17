@@ -12,8 +12,6 @@ static SDL_Texture *nuez_textura2 = NULL;
 static SDL_Texture *zombi_textura0 = NULL;
 static SDL_Texture *guisante_textura0 = NULL;
 
-static float offset_zombies[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};
-
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 
 
@@ -155,7 +153,7 @@ void cerrarSDL(void) {
     SDL_Quit();
 }
 
-void loopVisuales(float pos_camara_x){
+void loopVisuales(float pos_camara_x, int estadoJuego){
     prepararFondo();
 
     if(fondo1) {
@@ -176,6 +174,9 @@ void loopVisuales(float pos_camara_x){
         }
     }
 
+    if(estadoJuego == 3){
+        fondoPausa();
+    }
     SDL_RenderPresent(renderizador);
     SDL_Delay(16);
 }
@@ -211,6 +212,8 @@ void imprimirTextura(int planta, SDL_FRect rectangulo){
     }
 }
 
-void iniciarAnimacionZombie(int fila, int columna) {
-    offset_zombies[fila][columna] = (float)ANCHO_CELDA; 
+void fondoPausa(){
+    SDL_SetRenderDrawColor(renderizador, 0, 0, 0, 128);
+    SDL_FRect pantalla = {MARGEN_Y, MARGEN_X, ALTO, ANCHO};
+    SDL_RenderFillRect(renderizador, &pantalla);
 }

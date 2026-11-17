@@ -8,7 +8,7 @@ typedef enum {
     MENU,
     INTRO,
     PLAY,
-    PAUSA,
+    PAUSE,
     DEFEAT,
     VICTORY
 } estado;
@@ -60,10 +60,10 @@ cd src
             //para ponerle pausa: 
             if(evento.type == SDL_EVENT_KEY_DOWN){ // hacemos el evento
                 if(evento.key.key == SDLK_ESCAPE){ // asignamos la tecla escape
-                    if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos pausa
-                        estadoJuego = PAUSA;
-                        audio_pausar(true); //aprovechando pausamos la musica
-                    } else if(estadoJuego == PAUSA){// si el estado de juego esta en pausa le ponemos play 
+                    if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos PAUSE
+                        estadoJuego = PAUSE;
+                        audio_pausar(true); //aprovechando pausemos la musica
+                    } else if(estadoJuego == PAUSE){// si el estado de juego esta en PAUSE le ponemos play 
                         estadoJuego = PLAY;
                         audio_pausar(false);//reanudamos la musica 
                     }
@@ -100,7 +100,6 @@ cd src
                     estadoJuego = PLAY;
                     ultimo_turno = SDL_GetTicks();    
                 }
-                loopVisuales(pos_camara_x);
                 break;
             case PLAY:
                 ahora = SDL_GetTicks();
@@ -117,14 +116,13 @@ cd src
                     printf("Perdiste\n");
                     estadoJuego = DEFEAT;
                 }
+                break;
 
-
-
-                
+            case PAUSE:
                 break;
         }
 
-        loopVisuales(pos_camara_x);
+        loopVisuales(pos_camara_x, estadoJuego);
     }
 
     cerrarSDL();

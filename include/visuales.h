@@ -34,10 +34,10 @@ void RenderizarFondo(SDL_Renderer*, SDL_Texture*, float);
 //Prueba de la cuadrícula
 void RenderizarCuadriculaDebug(SDL_Renderer* renderer);
 
-void loopVisuales(float);
+void loopVisuales(float, int);
 
 bool animacionInicio(float*);
 
 void imprimirTextura(int, SDL_FRect);
-
+void fondoPausa();
 #endif
