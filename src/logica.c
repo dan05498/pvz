@@ -262,6 +262,7 @@ static int aparecer_zombie(void) {  //aparece zombie
 }
 
 static void empezar_oleada(void) {  //si empieza la oleada
+    audio_reproducir(SFX_Oleada);
     oleada++;
     fase = EN_OLEADA;
     zombies_por_salir = 3 * oleada + 2;  //cantidad de zombies q aparecen x oleada
