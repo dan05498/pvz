@@ -221,7 +221,9 @@ static void mover_zombies(void) {  //para que zombie avanze cada X turnos
             int delante = jardin[f][c - 1];  //si adelante tiene algun prop le quita vida
             if (delante == CASA) {
                 vida_casa--;
+                audio_reproducir(SFX_AWP);
                 dejar_pasto(f, c);
+                audio_reproducir(SFX_JEJE);
             } else if (es_planta(delante)) {
                 quitar_vida(f, c - 1);
             } else if (delante == PASTO) { //si es pasto, avanza, avanza su vida y deja el pasto
