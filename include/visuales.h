@@ -8,16 +8,16 @@
 
 #define NOMBRE_VENTANA  "pvz"
 
-#define ANCHO 800.0f
-#define ALTO 600.0f
+#define ANCHO 1280.0f
+#define ALTO 720.0f
 
 #define FILAS 5
 #define COLUMNAS 11
 
-#define MARGEN_X -31.0f
-#define MARGEN_Y 86.0f
-#define ANCHO_CELDA 79.0f
-#define ALTO_CELDA 97.0f
+#define MARGEN_X -47.0f      //80.0f - ANCHO_CELDA (127.0f)
+#define MARGEN_Y 103.0f
+#define ANCHO_CELDA 127.0f
+#define ALTO_CELDA 116.0f
 
 #define POS_CAMARA_JUGANDO      210.0f
 #define VEL_CAMARA              6.0f   

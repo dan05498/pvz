@@ -27,6 +27,13 @@ bool inicializarVisuales(void) {
 
     SDL_SetRenderDrawBlendMode(renderizador, SDL_BLENDMODE_BLEND);
 
+    SDL_SetRenderLogicalPresentation(           //Sección para que cuando se maximice la ventana, se autoajuste el contenido.
+        renderizador,
+        ANCHO,
+        ALTO,
+        SDL_LOGICAL_PRESENTATION_LETTERBOX
+    );
+
     //Carga de texturas:
 
     fondo1 = cargarTextura("assets/fondo1.png");
@@ -82,7 +89,7 @@ void RenderizarFondo(SDL_Renderer* renderizador, SDL_Texture* fondo1, float pos_
     SDL_FRect rect_origen = {
         pos_camara_x, 
         0.0f,
-        ANCHO,
+        800,
         ALTO
     };
 
@@ -163,13 +170,22 @@ void loopVisuales(float pos_camara_x, int estadoJuego){
     for (int fila = 0;fila < FILAS_JUEGO;fila++) {
         for (int columna = 0; columna < COLUMNAS_JUEGO;columna++){    
 
-            SDL_FRect rectangulo;
-            rectangulo.x = (float)(MARGEN_X + columna * ANCHO_CELDA);
-            rectangulo.y = (float)(MARGEN_Y + fila * ALTO_CELDA);
-            rectangulo.w = (float)ANCHO_CELDA;
-            rectangulo.h = (float)ALTO_CELDA;
-
             int elemento = obtener_celda(fila, columna);
+
+            SDL_FRect rectangulo;
+            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){
+                float salida_zombis = 40.0;
+                rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - (salida_zombis/2));
+                rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
+                rectangulo.w = (float)ANCHO_CELDA + salida_zombis;
+                rectangulo.h = (float)ALTO_CELDA + salida_zombis;
+            } else {
+                rectangulo.x = (float)(MARGEN_X + columna * ANCHO_CELDA);
+                rectangulo.y = (float)(MARGEN_Y + fila * ALTO_CELDA);
+                rectangulo.w = (float)ANCHO_CELDA;
+                rectangulo.h = (float)ALTO_CELDA;
+            }
+            
             imprimirTextura(elemento, rectangulo);
         }
     }
