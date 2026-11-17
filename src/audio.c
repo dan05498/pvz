@@ -65,6 +65,8 @@ bool audio_iniciar(void){
     efectos[SFX_Derrota] = MIX_LoadAudio(mixer, "assets/pvz_Derrota.mp3", true);
     efectos[SFX_Victoria] = MIX_LoadAudio(mixer, "assets/pvz_Victoria.mp3", true);
     efectos[SFX_Oleada] = MIX_LoadAudio(mixer, "assets/pvz_zombAreComming.mp3", true);
+    efectos[SFX_AWP] = MIX_LoadAudio(mixer, "assets/pvz_AWP.mp3", true);
+    efectos[SFX_JEJE] = MIX_LoadAudio(mixer, "assets/pvz_jeje.mp3", true);
 
 
     

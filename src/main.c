@@ -116,10 +116,18 @@ cd src
                 if(estado_juego() == VICTORIA){
                     printf("Ganaste\n");    //por ahora donde no hay pantalla de victoria xD
                     estadoJuego = VICTORY;
+                    audio_reproducir(SFX_Victoria); // audio de la victoria
+                    audio_pausar(true);
+                    audio_zombies(false);
+                    audio_zombies_comiendo(false);
                 }
                 if(estado_juego() == DERROTA){
                     printf("Perdiste\n");
                     estadoJuego = DEFEAT;
+                    audio_reproducir(SFX_Derrota); // audio de la derrota 
+                    audio_pausar(true);
+                    audio_zombies(false);
+                    audio_zombies_comiendo(false);
                 }
                 audio_zombies(hay_zombie());//osea mientras este el juego activo en PLay usamos el audio si hay zombies
 
