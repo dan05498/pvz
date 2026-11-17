@@ -140,7 +140,7 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
         return 0;
     }
     soles -= costo_planta(tipo);   //nos restamos el costo de la planta 
-    jardin[fila][col] = tipo;		//ponemos la planta en la matriz
+    jardin[fila][col] = tipo;audio_reproducir(SFX_Plantar);		//ponemos la planta en la matriz
     vida[fila][col] = vida_inicial(tipo);	//ponemos la vida de la planta
     return 1;
 }
