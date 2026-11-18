@@ -51,7 +51,7 @@ bool inicializarVisuales(void) {
     }
 
     //Carga de texturas:
-    fondo1 = cargarTextura("assets/fondo1.png");
+    fondo1 = cargarTextura("assets/fondo1.jpg");
     if(!fondo1){
         return false;
     }
@@ -109,8 +109,8 @@ void RenderizarFondo(SDL_Renderer* renderizador, SDL_Texture* fondo1, float pos_
     SDL_FRect rect_origen = {
         pos_camara_x, 
         0.0f,
-        800,
-        ALTO
+        1100.0f,
+        816.0f
     };
 
     SDL_FRect rect_destino = {
@@ -199,7 +199,7 @@ void loopVisuales(float pos_camara_x, int estadoJuego){
 
             SDL_FRect rectangulo;
             if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){
-                float salida_zombis = 40.0;
+                float salida_zombis = 30.0;
                 rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - (salida_zombis/2));
                 rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
                 rectangulo.w = (float)ANCHO_CELDA + salida_zombis;
@@ -207,20 +207,22 @@ void loopVisuales(float pos_camara_x, int estadoJuego){
             } else {
                 rectangulo.x = (float)(MARGEN_X + columna * ANCHO_CELDA);
                 rectangulo.y = (float)(MARGEN_Y + fila * ALTO_CELDA);
-                rectangulo.w = (float)ANCHO_CELDA;
-                rectangulo.h = (float)ALTO_CELDA;
+                rectangulo.w = (float)ANCHO_CELDA-15;
+                rectangulo.h = (float)ALTO_CELDA-15;
             }
             
             imprimirTextura(elemento, rectangulo);
         }
     }
 
-    if(estadoJuego == 3){
-        fondoPausa();
-    }
+    
     
     selectorPlantas();
     dibujarSoles(obtener_soles());
+
+    if(estadoJuego == 3){   //Pantalla oscurecida en la pausa.
+        fondoPausa();
+    }
 
     SDL_RenderPresent(renderizador);
     SDL_Delay(16);
@@ -259,7 +261,7 @@ void imprimirTextura(int planta, SDL_FRect rectangulo){
 
 void fondoPausa(){
     SDL_SetRenderDrawColor(renderizador, 0, 0, 0, 128);
-    SDL_FRect pantalla = {MARGEN_Y, MARGEN_X, ALTO, ANCHO};
+    SDL_FRect pantalla = {0.0f, 0.0f, ANCHO, ALTO};
     SDL_RenderFillRect(renderizador, &pantalla);
 }
 

@@ -134,6 +134,10 @@ cd src
                 break;
             case PAUSE:
                 break;
+            case VICTORY:
+                break;
+            case DEFEAT:
+                break;
         }
 
         loopVisuales(pos_camara_x, estadoJuego);

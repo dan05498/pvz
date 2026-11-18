@@ -21,7 +21,7 @@
 #define ANCHO_CELDA 127.0f
 #define ALTO_CELDA 116.0f
 
-#define POS_CAMARA_JUGANDO      210.0f
+#define POS_CAMARA_JUGANDO      300.0f
 #define VEL_CAMARA              6.0f   
 
 // Funciones de inicio y cierre
