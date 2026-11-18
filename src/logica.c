@@ -11,6 +11,8 @@ static struct configuracion config;
 
 static int jardin[FILAS_JUEGO][COLUMNAS_JUEGO];  //Matriz de Juego
 static int vida[FILAS_JUEGO][COLUMNAS_JUEGO];   //Matriz con la vida de las cosas del jardín
+static int guisantes[FILAS_JUEGO][COLUMNAS_JUEGO];
+static int soles_caidos;
 
 static int estado;   //jugando, victoria, derrota
 static int fase;	//preparacion, oleada, descanso
@@ -90,12 +92,14 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
     for (int f = 0; f < FILAS_JUEGO; f++) {
         jardin[f][0] = CASA;
         vida[f][0] = 0;
+        guisantes[f][0];
         for (int c = 1; c < COLUMNAS_JUEGO; c++) {
             jardin[f][c] = PASTO;
             vida[f][c] = 0;
+            guisantes[f][c];
         }
     }
-
+    soles_caidos=0;
     estado = JUGANDO;	//iniciamos los indicadores
     fase = EN_PREPARACION;
     turno = 0;
@@ -149,6 +153,7 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
 static void generar_soles(void) {
     if (turno % config.CADA_SOL_AUTOMATICO == 0) {   //se genera sol autom cada X turnos
         soles += config.SOLES_AUTOMATICO;
+        soles_caidos++;
         audio_reproducir(SFX_Sol);
     }
     if (turno % config.CADA_SOL_GIRASOL == 0) {   //se genera sol de girasol cada X turnos
@@ -164,26 +169,51 @@ static void generar_soles(void) {
 }
 
 
-static void llegar_guisante(int f, int col) { //función q decide q hará el guisante(avanzar, golpear, desaparecer)
-    while (col < COLUMNAS_JUEGO && es_planta(jardin[f][col])) {
-        col++;
-    }
-    if (col >= COLUMNAS_JUEGO) {  //se nos va de la columna
-        return;
-    }
-    if (es_zombie(jardin[f][col])) {  //si choca con un zombie le quita vida
-        quitar_vida(f, col);
-    } else if (jardin[f][col] == PASTO) {  //Si la casilla era pasto, pasa a ser guisante
-        jardin[f][col] = GUISANTE;
+static void golpear_zombie(int f, int c, int cantidad) {
+    for (int i = 0; i < cantidad; i++) {
+        if (es_zombie(jardin[f][c])) {
+            quitar_vida(f, c);
+        }
     }
 }
 
-static void mover_guisantes(void) { //con esto movemos el guisante pero en la matriz
+static void soltar_guisante(int f, int c) {
+    if (c >= COLUMNAS_JUEGO) {
+        return;
+    }
+    if (es_zombie(jardin[f][c])) {
+        golpear_zombie(f, c, 1);
+    } else {
+        guisantes[f][c]++;
+    }
+}
+
+static void mover_guisantes(void) {
     for (int f = 0; f < FILAS_JUEGO; f++) {
         for (int c = COLUMNAS_JUEGO - 1; c >= 1; c--) {
-            if (jardin[f][c] == GUISANTE) {
-                dejar_pasto(f, c);
-                llegar_guisante(f, c + 1);
+            int cantidad = guisantes[f][c];
+            if (cantidad == 0) {
+                continue;
+            }
+            guisantes[f][c] = 0;
+            if (c + 1 >= COLUMNAS_JUEGO) {
+                continue;
+            }
+            if (es_zombie(jardin[f][c + 1])) {
+                golpear_zombie(f, c + 1, cantidad);
+            } else {
+                guisantes[f][c + 1] += cantidad;
+            }
+        }
+    }
+}
+
+static void resolver_choques(void) {
+    for (int f = 0; f < FILAS_JUEGO; f++) {
+        for (int c = 1; c < COLUMNAS_JUEGO; c++) {
+            if (guisantes[f][c] > 0 && es_zombie(jardin[f][c])) {
+                golpear_zombie(f, c, guisantes[f][c]);
+                guisantes[f][c] = 0;
             }
         }
     }
@@ -196,7 +226,7 @@ static void disparar_plantas(void) {   //Si estamos en turno de disparo el lanza
     for (int f = 0; f < FILAS_JUEGO; f++) {
         for (int c = 1; c < COLUMNAS_JUEGO; c++) { //recorremos la matriz, si es lanzaguisante y hay zombie dispara
             if (jardin[f][c] == LANZAGUISANTES && hay_zombie_a_la_derecha(f, c)) {
-                llegar_guisante(f, c + 1); 
+                soltar_guisante(f, c + 1); 
                 audio_reproducir(SFX_Guizante);
             }
         }
@@ -308,6 +338,7 @@ void actualizar_juego(void) { //función con la que se actualiza el juego
     mover_guisantes(); //si hay lanzaguisantes disparando, movemos guisante
     disparar_plantas(); //si un guisante debe disparar lo hace
     mover_zombies(); //movemos zombies
+    resolver_choques;
     if (vida_casa <= 0) {  //si nos quedamos sin vida en la casa, perdemos
         vida_casa = 0;
         estado = DERROTA;
@@ -344,4 +375,33 @@ int obtener_oleada(void) {
 
 int obtener_total_oleadas(void) {
     return config.TOTAL_OLEADAS;
+}
+
+int obtener_guisante(int fila, int col) {
+    if (fila < 0 || fila >= FILAS_JUEGO || col < 0 || col >= COLUMNAS_JUEGO) {
+        return 0;
+    }
+    return guisantes[fila][col];
+}
+
+int obtener_dano(int fila, int col) {
+    if (fila < 0 || fila >= FILAS_JUEGO || col < 0 || col >= COLUMNAS_JUEGO) {
+        return 0;
+    }
+    int maxima = vida_inicial(jardin[fila][col]);
+    if (maxima <= 0) {
+        return 0;
+    }
+    int actual = vida[fila][col];
+    if (actual * 3 > maxima * 2) {
+        return 0;
+    }
+    if (actual * 3 > maxima) {
+        return 1;
+    }
+    return 2;
+}
+
+int obtener_soles_caidos(void) {
+    return soles_caidos;
 }
