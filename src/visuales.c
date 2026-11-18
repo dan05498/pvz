@@ -14,6 +14,7 @@ static SDL_Texture *nuez_textura0 = NULL;
 static SDL_Texture *nuez_textura1 = NULL;
 static SDL_Texture *nuez_textura2 = NULL;
 static SDL_Texture *zombi_textura0 = NULL;
+static SDL_Texture *flag_zombi_textura0 = NULL;
 static SDL_Texture *guisante_textura0 = NULL;
 
 static SDL_Texture *seed_lanzaguisantes = NULL;
@@ -87,6 +88,10 @@ bool inicializarVisuales(void) {
     }
     zombi_textura0 = cargarTextura("assets/images/zombi_textura0.png");
     if(!zombi_textura0){
+        return false;
+    }
+    flag_zombi_textura0 = cargarTextura("assets/images/flag_zombi_textura0.png");
+    if(!flag_zombi_textura0){
         return false;
     }
     guisante_textura0 = cargarTextura("assets/images/guisante_textura0.png");
@@ -221,8 +226,8 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
 
             SDL_FRect rectangulo;
             if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){
-                float salida_zombis = 30.0;
-                rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - (salida_zombis/2));
+                float salida_zombis = 90.0;
+                rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - salida_zombis);
                 rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
                 rectangulo.w = (float)ANCHO_CELDA + salida_zombis;
                 rectangulo.h = (float)ALTO_CELDA + salida_zombis;
@@ -283,8 +288,10 @@ void imprimirTextura(int planta, SDL_FRect rectangulo){
             SDL_RenderTexture(renderizador, nuez_textura0, NULL, &rectangulo);
             break;
         case ZOMBIE:
-        case FLAG_ZOMBIE:
             SDL_RenderTexture(renderizador, zombi_textura0, NULL, &rectangulo);
+            break;
+        case FLAG_ZOMBIE:
+            SDL_RenderTexture(renderizador, flag_zombi_textura0, NULL, &rectangulo);
             break;
         case GUISANTE:
             SDL_RenderTexture(renderizador, guisante_textura0, NULL, &rectangulo);
@@ -382,4 +389,12 @@ void dibujarSoles(int cantidad_soles) {
     SDL_RenderTexture(renderizador, textura_texto, NULL, &rect_destino);
 
     SDL_DestroyTexture(textura_texto);
+}
+
+void pantallaDerrota(){
+
+}
+
+void pantallaVictoria(){
+
 }
