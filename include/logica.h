@@ -30,7 +30,9 @@ int plantar(int tipo, int fila, int col);
 void actualizar_juego(void);
 
 int obtener_celda(int fila, int col);
-
+int obtener_guisante(int fila, int col);
+int obtener_dano(int fila, int col);
+int obtener_soles_caidos(void);
 int estado_juego(void);
 int obtener_soles(void);
 int obtener_vida_casa(void);
