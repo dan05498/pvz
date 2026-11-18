@@ -24,14 +24,6 @@ int main(){
 
     if(!audio_iniciar()) return 1;
 
-   /*para que funcione:
-cd ~/pvz/pvz
-./compilar.sh
-cd src
-../pvz
-*/
-
-
     //Arranque de Visuales:
     if(!inicializarVisuales()){
         return 1;
@@ -107,13 +99,20 @@ cd src
                 if(evento.key.key == SDLK_3){
                     planta_elegida = NUEZ;
                 }
+                if(evento.key.key == SDLK_4){
+                    planta_elegida = PALA;
+                }
             }
 
             if(estadoJuego == PLAY && evento.type == SDL_EVENT_MOUSE_BUTTON_DOWN && evento.button.button == SDL_BUTTON_LEFT){
                 if(evento.button.x >= MARGEN_X && evento.button.y >= MARGEN_Y){
                     int col = (int)((evento.button.x - MARGEN_X) / ANCHO_CELDA);
                     int fila = (int)((evento.button.y - MARGEN_Y) / ALTO_CELDA);
+                    if(planta_elegida == PALA){
+                        quitar_planta(fila, col);
+                    } else {
                     plantar(planta_elegida, fila, col);
+                    }
                 }
             }
         }
