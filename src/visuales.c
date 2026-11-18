@@ -50,62 +50,62 @@ bool inicializarVisuales(void) {
     );
 
     //Carga de la fuente:
-    fuente_costo = TTF_OpenFont("assets/contb.ttf", 24); // Tamaño 24
+    fuente_costo = TTF_OpenFont("assets/fonts/contb.ttf", 24); // Tamaño 24
     if (!fuente_costo) {
         SDL_Log("Error al cargar la fuente: %s", SDL_GetError());
         return false;
     }
 
     //Carga de texturas:
-    fondo1 = cargarTextura("assets/fondo1.jpg");
+    fondo1 = cargarTextura("assets/images/fondo1.jpg");
     if(!fondo1){
         return false;
     }
-    fondoSelector = cargarTextura("assets/fondoSelector.png");
+    fondoSelector = cargarTextura("assets/images/fondoSelector.png");
     if(!fondoSelector){
         return false;
     }
-    lanzaguisantes_textura0 = cargarTextura("assets/lanzaguisantes_textura0.png");
+    lanzaguisantes_textura0 = cargarTextura("assets/images/lanzaguisantes_textura0.png");
     if(!lanzaguisantes_textura0){
         return false;
     }
-    girasol_textura0 = cargarTextura("assets/girasol_textura0.png");
+    girasol_textura0 = cargarTextura("assets/images/girasol_textura0.png");
     if(!girasol_textura0){
         return false;
     }
-    nuez_textura0 = cargarTextura("assets/nuez_textura0.png");
+    nuez_textura0 = cargarTextura("assets/images/nuez_textura0.png");
     if(!nuez_textura0){
         return false;
     }
-    nuez_textura1 = cargarTextura("assets/nuez_textura1.png");
+    nuez_textura1 = cargarTextura("assets/images/nuez_textura1.png");
     if(!nuez_textura1){
         return false;
     }
-    nuez_textura2 = cargarTextura("assets/nuez_textura2.png");
+    nuez_textura2 = cargarTextura("assets/images/nuez_textura2.png");
     if(!nuez_textura2){
         return false;
     }
-    zombi_textura0 = cargarTextura("assets/zombi_textura0.png");
+    zombi_textura0 = cargarTextura("assets/images/zombi_textura0.png");
     if(!zombi_textura0){
         return false;
     }
-    guisante_textura0 = cargarTextura("assets/guisante_textura0.png");
+    guisante_textura0 = cargarTextura("assets/images/guisante_textura0.png");
     if(!guisante_textura0){
         return false;
     }
-    seed_lanzaguisantes = cargarTextura("assets/seed_lanzaguisantes.png");
+    seed_lanzaguisantes = cargarTextura("assets/images/seed_lanzaguisantes.png");
     if(!seed_lanzaguisantes){
         return false;
     }
-    seed_girasol = cargarTextura("assets/seed_girasol.png");
+    seed_girasol = cargarTextura("assets/images/seed_girasol.png");
     if(!seed_girasol){
         return false;
     }
-    seed_nuez = cargarTextura("assets/seed_nuez.png");
+    seed_nuez = cargarTextura("assets/images/seed_nuez.png");
     if(!seed_nuez){
         return false;
     }
-    seed_selector = cargarTextura("assets/seed_selector.png");
+    seed_selector = cargarTextura("assets/images/seed_selector.png");
     if(!seed_selector){
         return false;
     }

@@ -11,9 +11,9 @@ static MIX_Track *track_zombie = NULL;
 static bool zombies_activo = false;
 static bool comiendo_activo = false;
 
-#define RUTA_MUSICA     "assets/pvz_soundtrack1.mp3" //asignamos la cancion
-#define RUTA_SONIDO_ZOMBIES "assets/pvz_zombTrack.mp3" //el sonido de los zombies 
-#define RUTA_ZOMBIE_COMIENDO "assets/pvz_zombComiendo.mp3" //el sonido de comer de los zombies
+#define RUTA_MUSICA     "assets/sounds/pvz_soundtrack1.mp3" //asignamos la cancion
+#define RUTA_SONIDO_ZOMBIES "assets/sounds/pvz_zombTrack.mp3" //el sonido de los zombies 
+#define RUTA_ZOMBIE_COMIENDO "assets/sounds/pvz_zombComiendo.mp3" //el sonido de comer de los zombies
 
 
 static void reproducir_en_bucle(MIX_Track *t){
@@ -59,14 +59,14 @@ bool audio_iniciar(void){
 
     //ahora para los efectos mas simples o no loop usaremos los sfx de audio.h seguir el orden
 
-    efectos[SFX_Plantar] = MIX_LoadAudio(mixer, "assets/plant.mp3", true); // el true significa que tendra guardado el sonido y asi no se reproduce con lag pero esto gasta mas ram que false aunque false puede dar lag
-    efectos[SFX_Sol] = MIX_LoadAudio(mixer, "assets/pvz_sol.mp3", true);
-    efectos[SFX_Guizante] = MIX_LoadAudio(mixer, "assets/pvz_guisante.mp3", true);
-    efectos[SFX_Derrota] = MIX_LoadAudio(mixer, "assets/pvz_Derrota.mp3", true);
-    efectos[SFX_Victoria] = MIX_LoadAudio(mixer, "assets/pvz_Victoria.mp3", true);
-    efectos[SFX_Oleada] = MIX_LoadAudio(mixer, "assets/pvz_zombAreComming.mp3", true);
-    efectos[SFX_AWP] = MIX_LoadAudio(mixer, "assets/pvz_AWP.mp3", true);
-    efectos[SFX_JEJE] = MIX_LoadAudio(mixer, "assets/pvz_jeje.mp3", true);
+    efectos[SFX_Plantar] = MIX_LoadAudio(mixer, "assets/sounds/plant.mp3", true); // el true significa que tendra guardado el sonido y asi no se reproduce con lag pero esto gasta mas ram que false aunque false puede dar lag
+    efectos[SFX_Sol] = MIX_LoadAudio(mixer, "assets/sounds/pvz_sol.mp3", true);
+    efectos[SFX_Guizante] = MIX_LoadAudio(mixer, "assets/sounds/pvz_guisante.mp3", true);
+    efectos[SFX_Derrota] = MIX_LoadAudio(mixer, "assets/sounds/pvz_Derrota.mp3", true);
+    efectos[SFX_Victoria] = MIX_LoadAudio(mixer, "assets/sounds/pvz_Victoria.mp3", true);
+    efectos[SFX_Oleada] = MIX_LoadAudio(mixer, "assets/sounds/pvz_zombAreComming.mp3", true);
+    efectos[SFX_AWP] = MIX_LoadAudio(mixer, "assets/sounds/pvz_AWP.mp3", true);
+    efectos[SFX_JEJE] = MIX_LoadAudio(mixer, "assets/sounds/pvz_jeje.mp3", true);
 
 
     
