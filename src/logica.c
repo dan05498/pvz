@@ -93,11 +93,11 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
     for (int f = 0; f < FILAS_JUEGO; f++) {
         jardin[f][0] = CASA;
         vida[f][0] = 0;
-        guisantes[f][0];
+        guisantes[f][0]=0;
         for (int c = 1; c < COLUMNAS_JUEGO; c++) {
             jardin[f][c] = PASTO;
             vida[f][c] = 0;
-            guisantes[f][c];
+            guisantes[f][c]=0;
         }
     }
     soles_caidos=0;
@@ -339,7 +339,7 @@ void actualizar_juego(void) { //función con la que se actualiza el juego
     mover_guisantes(); //si hay lanzaguisantes disparando, movemos guisante
     disparar_plantas(); //si un guisante debe disparar lo hace
     mover_zombies(); //movemos zombies
-    resolver_choques;
+    resolver_choques();
     if (vida_casa <= 0) {  //si nos quedamos sin vida en la casa, perdemos
         vida_casa = 0;
         estado = DERROTA;
