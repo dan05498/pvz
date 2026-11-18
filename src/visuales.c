@@ -210,8 +210,19 @@ void loopVisuales(float pos_camara_x, int estadoJuego){
                 rectangulo.w = (float)ANCHO_CELDA-15;
                 rectangulo.h = (float)ALTO_CELDA-15;
             }
-            
+
             imprimirTextura(elemento, rectangulo);
+            int guisante = obtener_guisante(fila,columna);
+
+            if(guisante){
+                SDL_FRect rectanguloGuisante = {
+                    (float)(MARGEN_X + columna * ANCHO_CELDA),
+                    (float)(MARGEN_Y + fila * ALTO_CELDA),
+                    (float)ANCHO_CELDA-15,
+                    (float)ALTO_CELDA-15
+                };
+                imprimirTextura(GUISANTE, rectanguloGuisante);
+            }
         }
     }
 
