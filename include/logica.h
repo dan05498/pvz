@@ -18,6 +18,7 @@
 #define GUISANTE         20   
 
 #define CASA             30
+#define PALA             40
 
 #define JUGANDO          0
 #define VICTORIA         1
@@ -26,6 +27,7 @@
 void iniciar_logica(struct configuracion *cfg);  //Con esto creamos el mapa de juego
 
 int plantar(int tipo, int fila, int col);
+int quitar_planta(int fila, int col);
 
 void actualizar_juego(void);
 
