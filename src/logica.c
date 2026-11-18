@@ -1,3 +1,4 @@
+#include <stdio.h> //para poder usar el FILE * etc etc cargar partida en resumen
 #include <stdlib.h>
 #include <time.h>
 #include "../include/logica.h"
@@ -405,3 +406,22 @@ int obtener_dano(int fila, int col) {
 int obtener_soles_caidos(void) {
     return soles_caidos;
 }
+
+void cargar_partida(void){
+    FILE *cargar = fopen("config/partida_guardada.txt", "r");
+
+    if(cargar == NULL){
+        return; // para que no modifique nada si no hay nada que cargar
+    }
+
+    fscanf(cargar, "%d %d %d", &soles, &vida_casa, &oleada); // leemos y cargamos lo que teniamos
+
+    for(int F=0; F<FILAS_JUEGO;F++){
+        for(int C=0;C<COLUMNAS_JUEGO;C++){
+            fscanf(cargar, "%d", &jardin[F][C]); //cargamos el jardin
+        }
+    }
+    fclose(cargar); //ya que cargamos
+
+}
+

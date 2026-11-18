@@ -73,6 +73,30 @@ cd src
                 }
             }
 
+            if(evento.type == SDL_EVENT_KEY_DOWN){ // hacemos el evento
+                if(evento.key.key == SDLK_P){
+                    FILE *archivo_guardado = fopen("config/partida_guardada.txt", "w"); //hacemos el archivo de guardado con w que es write para escribir los datos que llevamos
+
+                    fprintf(archivo_guardado, "%d %d %d\n", obtener_soles(), obtener_vida_casa(), obtener_oleada());
+
+                    for(int i=0; i<FILAS_JUEGO; i++){
+                        for(int j=0; j<COLUMNAS_JUEGO; j++){
+                            fprintf(archivo_guardado, "%d ", obtener_celda(i,j));
+                        }
+                        fprintf(archivo_guardado, "\n");
+                    }
+                    fclose(archivo_guardado);
+                    printf("se guardo partida con el nombre partida_guardada.txt \n");
+                }
+            }      
+            
+            if(evento.type == SDL_EVENT_KEY_DOWN){ // hacemos el evento
+                if(evento.key.key == SDLK_L){//L para cargar la partida
+                    cargar_partida();
+                    estadoJuego = PLAY;
+                }
+            }
+
             if(estadoJuego == PLAY && evento.type == SDL_EVENT_KEY_DOWN){
                 if(evento.key.key == SDLK_1){
                     planta_elegida = GIRASOL;

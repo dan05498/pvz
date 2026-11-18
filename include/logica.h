@@ -44,4 +44,6 @@ int costo_planta(int tipo);
 bool hay_zombie(void);
 bool hay_zombie_comiendo(void);
 
+void cargar_partida(void); // la funcion de apretar l para cargar enta en la ultima linea de logica c
+
 #endif
