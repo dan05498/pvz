@@ -10,16 +10,19 @@
 
 #define NOMBRE_VENTANA  "pvz"
 
-#define ANCHO 1280.0f
-#define ALTO 720.0f
+#define ANCHO                   1280.0f
+#define ALTO                    720.0f
 
-#define FILAS 5
-#define COLUMNAS 11
+#define FILAS                   5
+#define COLUMNAS                11
 
-#define MARGEN_X -47.0f      //80.0f - ANCHO_CELDA (127.0f)
-#define MARGEN_Y 103.0f
-#define ANCHO_CELDA 127.0f
-#define ALTO_CELDA 116.0f
+#define MARGEN_X                -47.0f      //80.0f - ANCHO_CELDA (127.0f)
+#define MARGEN_Y                103.0f
+#define ANCHO_CELDA             127.0f
+#define ALTO_CELDA              116.0f
+
+#define MARGEN_X_SELECTOR       20.0f
+#define MARGEN_Y_SELECTOR       0.0f
 
 #define POS_CAMARA_JUGANDO      300.0f
 #define VEL_CAMARA              6.0f   
@@ -36,12 +39,12 @@ void RenderizarFondo(SDL_Renderer*, SDL_Texture*, float);
 //Prueba de la cuadrícula
 void RenderizarCuadriculaDebug(SDL_Renderer* renderer);
 
-void loopVisuales(float, int);
+void loopVisuales(float, int, int);
 
 bool animacionInicio(float*);
 
 void imprimirTextura(int, SDL_FRect);
 void fondoPausa();
-void selectorPlantas();
+void selectorPlantas(int);
 void dibujarSoles();
 #endif

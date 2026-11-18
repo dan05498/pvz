@@ -140,7 +140,7 @@ cd src
                 break;
         }
 
-        loopVisuales(pos_camara_x, estadoJuego);
+        loopVisuales(pos_camara_x, estadoJuego, planta_elegida);
     }
 
     cerrarSDL();

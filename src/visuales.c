@@ -16,6 +16,12 @@ static SDL_Texture *nuez_textura2 = NULL;
 static SDL_Texture *zombi_textura0 = NULL;
 static SDL_Texture *guisante_textura0 = NULL;
 
+static SDL_Texture *seed_lanzaguisantes = NULL;
+static SDL_Texture *seed_girasol = NULL;
+static SDL_Texture *seed_nuez = NULL;
+static SDL_Texture *seed_selector = NULL;
+ 
+
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 
 
@@ -85,6 +91,22 @@ bool inicializarVisuales(void) {
     }
     guisante_textura0 = cargarTextura("assets/guisante_textura0.png");
     if(!guisante_textura0){
+        return false;
+    }
+    seed_lanzaguisantes = cargarTextura("assets/seed_lanzaguisantes.png");
+    if(!seed_lanzaguisantes){
+        return false;
+    }
+    seed_girasol = cargarTextura("assets/seed_girasol.png");
+    if(!seed_girasol){
+        return false;
+    }
+    seed_nuez = cargarTextura("assets/seed_nuez.png");
+    if(!seed_nuez){
+        return false;
+    }
+    seed_selector = cargarTextura("assets/seed_selector.png");
+    if(!seed_selector){
         return false;
     }
     
@@ -185,7 +207,7 @@ void cerrarSDL(void) {
     SDL_Quit();
 }
 
-void loopVisuales(float pos_camara_x, int estadoJuego){
+void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
     prepararFondo();
 
     if(fondo1) {
@@ -228,7 +250,7 @@ void loopVisuales(float pos_camara_x, int estadoJuego){
 
     
     
-    selectorPlantas();
+    selectorPlantas(planta_elegida);
     dibujarSoles(obtener_soles());
 
     if(estadoJuego == 3){   //Pantalla oscurecida en la pausa.
@@ -276,15 +298,53 @@ void fondoPausa(){
     SDL_RenderFillRect(renderizador, &pantalla);
 }
 
-void selectorPlantas(){
+void selectorPlantas(int planta_elegida){
     SDL_FRect rectangulo = {
-        20.0f,
-        0.0f,
+        MARGEN_X_SELECTOR,
+        MARGEN_Y_SELECTOR,
         720.0f,
         100.0f
     };
     SDL_RenderTexture(renderizador, fondoSelector, NULL, &rectangulo);
-}
+    
+    SDL_FRect rectanguloGirasol = {
+        MARGEN_X_SELECTOR + 115,
+        MARGEN_Y_SELECTOR + 10,
+        60.0f,
+        80.0f
+    };
+    SDL_RenderTexture(renderizador, seed_girasol, NULL, &rectanguloGirasol);
+
+    SDL_FRect rectanguloLanzaguisantes = {
+        MARGEN_X_SELECTOR + 115 + 75,
+        MARGEN_Y_SELECTOR + 10,
+        60.0f,
+        80.0f
+    };
+    SDL_RenderTexture(renderizador, seed_lanzaguisantes, NULL, &rectanguloLanzaguisantes);
+
+    SDL_FRect rectanguloNuez = {
+        MARGEN_X_SELECTOR + 115 + 75 + 75,
+        MARGEN_Y_SELECTOR + 10,
+        60.0f,
+        80.0f
+    };
+    SDL_RenderTexture(renderizador, seed_nuez, NULL, &rectanguloNuez);
+
+    switch (planta_elegida){
+        case GIRASOL:
+            SDL_RenderTexture(renderizador, seed_selector, NULL, &rectanguloGirasol);
+            break;
+        case LANZAGUISANTES:
+            SDL_RenderTexture(renderizador, seed_selector, NULL, &rectanguloLanzaguisantes);
+            break;
+        case NUEZ:
+            SDL_RenderTexture(renderizador, seed_selector, NULL, &rectanguloNuez);
+            break;
+    }   
+    
+
+    }
 
 void dibujarSoles(int cantidad_soles) { 
     if (!fuente_costo) return;
@@ -312,8 +372,8 @@ void dibujarSoles(int cantidad_soles) {
     
     // Rectángulo de salida
     SDL_FRect rect_destino = {
-        50.0f,  // Posición X 
-        70.0f,  // Posición Y
+        (float)(147.0f - ancho_texto)/2,  // Posición X 
+        (float)(170.0f - alto_texto)/2,  // Posición Y
         (float)ancho_texto, // Ancho de la textura generada
         (float)alto_texto  // Alto de la textura generada
     };
