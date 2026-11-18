@@ -150,6 +150,22 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
     return 1;
 }
 
+int quitar_planta(int fila, int col) {
+    if (estado != JUGANDO) {
+        return 0;
+    }
+    if (fila < 0 || fila >= FILAS_JUEGO) {
+        return 0;
+    }
+    if (col < 1 || col > COLUMNAS_JUEGO - 2) {
+        return 0;
+    }
+    if (!es_planta(jardin[fila][col])) {
+        return 0;
+    }
+    dejar_pasto(fila, col);
+    return 1;
+}
 
 static void generar_soles(void) {
     if (turno % config.CADA_SOL_AUTOMATICO == 0) {   //se genera sol autom cada X turnos
