@@ -2,9 +2,12 @@ TARGET = pvz
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -std=c11 -Iinclude
+LIBS_INC = libs/include
+LIBS_LIB = libs/lib
 
-LDFLAGS = -lSDL3 -lSDL3_image -lSDL3_mixer -lSDL3_ttf #Banderas para SLD3
+CFLAGS = -Wall -Wextra -std=c11 -I$(INC_DIR) -I$(LIBS_INC)
+LDFLAGS = -L$(LIBS_LIB) -Wl,-rpath,'$$ORIGIN/../$(LIBS_LIB)'
+LDLIBS = -lSDL3 -lSDL3_image -lSDL3_mixer -lSDL3_ttf -lm
 
 SRC_DIR = src
 INC_DIR = include
@@ -27,7 +30,7 @@ directories:
 	@mkdir -p $(BIN_DIR)
 
 $(BIN_DIR)/$(TARGET): $(OBJS_COMMON) $(OBJ_MAIN)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
