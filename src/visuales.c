@@ -21,7 +21,10 @@ static SDL_Texture *seed_lanzaguisantes = NULL;
 static SDL_Texture *seed_girasol = NULL;
 static SDL_Texture *seed_nuez = NULL;
 static SDL_Texture *seed_selector = NULL;
- 
+
+static SDL_Texture *pala = NULL;
+static SDL_Texture *pala_espacio = NULL;
+
 
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 
@@ -114,6 +117,14 @@ bool inicializarVisuales(void) {
     if(!seed_selector){
         return false;
     }
+    pala = cargarTextura("assets/images/pala.png");
+    if(!pala){
+        return false;
+    }
+    pala_espacio = cargarTextura("assets/images/pala_espacio.png");
+    if(!pala_espacio){
+        return false;
+    }    
     
 
     return true;
@@ -225,7 +236,7 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
             int elemento = obtener_celda(fila, columna);
 
             SDL_FRect rectangulo;
-            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){
+            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){ //Con esto hago la distinción, los zombis son más altos que las plantas
                 float salida_zombis = 90.0;
                 rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - salida_zombis);
                 rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
@@ -238,7 +249,7 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
                 rectangulo.h = (float)ALTO_CELDA-15;
             }
 
-            imprimirTextura(elemento, rectangulo);
+            imprimirTextura(elemento, rectangulo, obtener_dano(fila, columna));
             int guisante = obtener_guisante(fila,columna);
 
             if(guisante){
@@ -248,14 +259,14 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
                     (float)ANCHO_CELDA-15,
                     (float)ALTO_CELDA-15
                 };
-                imprimirTextura(GUISANTE, rectanguloGuisante);
+                imprimirTextura(GUISANTE, rectanguloGuisante, obtener_dano(fila, columna));
             }
         }
     }
 
     
     
-    selectorPlantas(planta_elegida);
+    dibujarUI(planta_elegida);
     dibujarSoles(obtener_soles());
 
     if(estadoJuego == 3){   //Pantalla oscurecida en la pausa.
@@ -276,7 +287,7 @@ bool animacionInicio(float *pos_camara_x){
     return true;
 }
 
-void imprimirTextura(int planta, SDL_FRect rectangulo){
+void imprimirTextura(int planta, SDL_FRect rectangulo, int daño_nuez){
     switch (planta) {
         case GIRASOL:
             SDL_RenderTexture(renderizador, girasol_textura0, NULL, &rectangulo);
@@ -285,7 +296,14 @@ void imprimirTextura(int planta, SDL_FRect rectangulo){
             SDL_RenderTexture(renderizador, lanzaguisantes_textura0, NULL, &rectangulo);
             break;
         case NUEZ:
-            SDL_RenderTexture(renderizador, nuez_textura0, NULL, &rectangulo);
+            if (daño_nuez == 0){
+                SDL_RenderTexture(renderizador, nuez_textura0, NULL, &rectangulo);  //Textura base
+            } else if (daño_nuez == 1) {
+                SDL_RenderTexture(renderizador, nuez_textura1, NULL, &rectangulo);  //Textura con daño
+            } else {
+                SDL_RenderTexture(renderizador, nuez_textura2, NULL, &rectangulo);  //Textura con aún más daño
+            }
+            
             break;
         case ZOMBIE:
             SDL_RenderTexture(renderizador, zombi_textura0, NULL, &rectangulo);
@@ -305,7 +323,7 @@ void fondoPausa(){
     SDL_RenderFillRect(renderizador, &pantalla);
 }
 
-void selectorPlantas(int planta_elegida){
+void dibujarUI(int planta_elegida){
     SDL_FRect rectangulo = {
         MARGEN_X_SELECTOR,
         MARGEN_Y_SELECTOR,
@@ -338,6 +356,14 @@ void selectorPlantas(int planta_elegida){
     };
     SDL_RenderTexture(renderizador, seed_nuez, NULL, &rectanguloNuez);
 
+    SDL_FRect rectanguloPala = {
+        MARGEN_X_SELECTOR + 720.0f,
+        MARGEN_Y_SELECTOR,
+        80.0f,
+        80.0f
+    };
+    SDL_RenderTexture(renderizador, pala_espacio, NULL, &rectanguloPala);
+    int pala_seleccionada = 0;
     switch (planta_elegida){
         case GIRASOL:
             SDL_RenderTexture(renderizador, seed_selector, NULL, &rectanguloGirasol);
@@ -348,8 +374,13 @@ void selectorPlantas(int planta_elegida){
         case NUEZ:
             SDL_RenderTexture(renderizador, seed_selector, NULL, &rectanguloNuez);
             break;
+        case PALA:
+            pala_seleccionada = 1;
     }   
     
+    if(!pala_seleccionada){
+        SDL_RenderTexture(renderizador, pala, NULL, &rectanguloPala);
+    }
 
     }
 

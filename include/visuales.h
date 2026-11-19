@@ -16,7 +16,7 @@
 #define FILAS                   5
 #define COLUMNAS                11
 
-#define MARGEN_X                -47.0f      //80.0f - ANCHO_CELDA (127.0f)
+#define MARGEN_X                -52.0f      //80.0f - ANCHO_CELDA (127.0f)
 #define MARGEN_Y                103.0f
 #define ANCHO_CELDA             127.0f
 #define ALTO_CELDA              116.0f
@@ -43,8 +43,8 @@ void loopVisuales(float, int, int);
 
 bool animacionInicio(float*);
 
-void imprimirTextura(int, SDL_FRect);
+void imprimirTextura(int, SDL_FRect, int);
 void fondoPausa();
-void selectorPlantas(int);
+void dibujarUI(int);
 void dibujarSoles();
 #endif

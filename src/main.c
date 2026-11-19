@@ -110,6 +110,7 @@ int main(){
                     int fila = (int)((evento.button.y - MARGEN_Y) / ALTO_CELDA);
                     if(planta_elegida == PALA){
                         quitar_planta(fila, col);
+                        planta_elegida = GIRASOL;
                     } else {
                     plantar(planta_elegida, fila, col);
                     }
