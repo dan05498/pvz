@@ -5,6 +5,7 @@ static SDL_Window *ventana = NULL;
 static SDL_Renderer *renderizador = NULL;
 
 static TTF_Font *fuente_costo = NULL;   // contb.ttf
+static TTF_Font *fuente_texto = NULL;   // Brianne_s_hand.ttf
 
 static SDL_Texture *fondo1 = NULL; 
 static SDL_Texture *fondoSelector = NULL;     
@@ -24,6 +25,9 @@ static SDL_Texture *seed_selector = NULL;
 
 static SDL_Texture *pala = NULL;
 static SDL_Texture *pala_espacio = NULL;
+
+static char mensaje_notificacion[64] = "";  //Para notificaciones como partida guardada, partida cargada, etc
+static Uint64 tiempo_fin_mensaje = 0; 
 
 
 bool inicializarVisuales(void) {
@@ -56,6 +60,12 @@ bool inicializarVisuales(void) {
     //Carga de la fuente:
     fuente_costo = TTF_OpenFont("assets/fonts/contb.ttf", 24); // Tamaño 24
     if (!fuente_costo) {
+        SDL_Log("Error al cargar la fuente: %s", SDL_GetError());
+        return false;
+    }
+    
+    fuente_texto = TTF_OpenFont("assets/fonts/Brianne_s_hand.ttf", 50); // Tamaño 24
+    if (!fuente_texto) {
         SDL_Log("Error al cargar la fuente: %s", SDL_GetError());
         return false;
     }
@@ -269,6 +279,8 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
     dibujarUI(planta_elegida);
     dibujarSoles(obtener_soles());
 
+    renderizarNotificacion();
+
     if(estadoJuego == 3){   //Pantalla oscurecida en la pausa.
         fondoPausa();
     }
@@ -428,4 +440,38 @@ void pantallaDerrota(){
 
 void pantallaVictoria(){
 
+}
+
+void mostrarNotificacion(char *texto, Uint64 duracion_ms) {
+    snprintf(mensaje_notificacion, sizeof(mensaje_notificacion), "%s", texto);
+    tiempo_fin_mensaje = SDL_GetTicks() + duracion_ms;
+}
+
+void renderizarNotificacion(void) {
+    if (!fuente_texto || mensaje_notificacion[0] == '\0' || SDL_GetTicks() >= tiempo_fin_mensaje) {
+        return;
+    }
+
+    SDL_Color color_texto = {255, 255, 255, 255};
+    SDL_Surface *superficie = TTF_RenderText_Blended(fuente_texto, mensaje_notificacion, 0, color_texto);
+    if (!superficie) return;
+
+    // Guardar dimensiones antes de destruir la superficie
+    float ancho_txt = (float)superficie->w;
+    float alto_txt = (float)superficie->h;
+
+    SDL_Texture *textura = SDL_CreateTextureFromSurface(renderizador, superficie);
+    SDL_DestroySurface(superficie);
+
+    if (!textura) return;
+
+    SDL_FRect rect_destino = {
+        (float)(ANCHO - ancho_txt)/2,
+        (float)(ALTO - alto_txt - 50.0f), // 30px por encima del borde inferior
+        (float)ancho_txt,
+        (float)alto_txt
+    };
+
+    SDL_RenderTexture(renderizador, textura, NULL, &rect_destino);
+    SDL_DestroyTexture(textura);
 }

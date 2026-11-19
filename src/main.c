@@ -79,12 +79,14 @@ int main(){
                     }
                     fclose(archivo_guardado);
                     printf("se guardo partida con el nombre partida_guardada.txt \n");
+                    mostrarNotificacion("Partida guardada correctamente.", 2000);
                 }
             }      
             
             if(evento.type == SDL_EVENT_KEY_DOWN){ // hacemos el evento
                 if(evento.key.key == SDLK_L){//L para cargar la partida
                     cargar_partida();
+                    mostrarNotificacion("Partida cargada correctamente.", 2000);
                     estadoJuego = PLAY;
                 }
             }

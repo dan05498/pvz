@@ -47,4 +47,7 @@ void imprimirTextura(int, SDL_FRect, int);
 void fondoPausa();
 void dibujarUI(int);
 void dibujarSoles();
+
+void mostrarNotificacion(char*, Uint64);
+void renderizarNotificacion();
 #endif
