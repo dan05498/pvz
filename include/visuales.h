@@ -27,6 +27,8 @@
 #define POS_CAMARA_JUGANDO      300.0f
 #define VEL_CAMARA              6.0f   
 
+#define VEL_ZOMBI_GUISANTE      25.0f
+
 // Funciones de inicio y cierre
 bool inicializarVisuales(void);
 void cerrarSDL(void);

@@ -29,7 +29,6 @@ static SDL_Texture *pala_espacio = NULL;
 static char mensaje_notificacion[64] = "";  //Para notificaciones como partida guardada, partida cargada, etc
 static Uint64 tiempo_fin_mensaje = 0; 
 
-
 bool inicializarVisuales(void) {
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software"); 
 
@@ -198,6 +197,10 @@ void cerrarSDL(void) {
         TTF_CloseFont(fuente_costo);
         fuente_costo = NULL;
     }
+    if (fuente_texto) {
+        TTF_CloseFont(fuente_texto);
+        fuente_texto = NULL;
+    }
     if(lanzaguisantes_textura0) {
         SDL_DestroyTexture(lanzaguisantes_textura0); 
         lanzaguisantes_textura0 = NULL;
@@ -226,12 +229,47 @@ void cerrarSDL(void) {
         SDL_DestroyTexture(guisante_textura0); 
         guisante_textura0 = NULL;
     }
+    if(flag_zombi_textura0) {
+        SDL_DestroyTexture(flag_zombi_textura0); 
+        flag_zombi_textura0 = NULL;
+    }
+    if(seed_girasol) {
+        SDL_DestroyTexture(seed_girasol); 
+        seed_girasol = NULL;
+    }
+    if(seed_lanzaguisantes) {
+        SDL_DestroyTexture(seed_lanzaguisantes); 
+        seed_lanzaguisantes = NULL;
+    }
+    if(seed_nuez) {
+        SDL_DestroyTexture(seed_nuez); 
+        seed_nuez = NULL;
+    }
+    if(seed_selector) {
+        SDL_DestroyTexture(seed_selector); 
+        seed_selector = NULL;
+    }
+    if(pala) {
+        SDL_DestroyTexture(pala); 
+        pala = NULL;
+    }
+    if(pala_espacio) {
+        SDL_DestroyTexture(pala_espacio); 
+        pala_espacio = NULL;
+    }
+    if(fondoSelector) {
+        SDL_DestroyTexture(fondoSelector); 
+        fondoSelector = NULL;
+    }
+
     if(renderizador) SDL_DestroyRenderer(renderizador);
     if(ventana) SDL_DestroyWindow(ventana);
     TTF_Quit();
     MIX_Quit();
     SDL_Quit();
 }
+
+
 
 void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
     prepararFondo();
@@ -390,11 +428,20 @@ void dibujarUI(int planta_elegida){
             pala_seleccionada = 1;
     }   
     
-    if(!pala_seleccionada){
+    if(pala_seleccionada){
+        float cursor_x, cursor_y;
+        SDL_GetMouseState(&cursor_x, &cursor_y);
+        SDL_FRect rectanguloCursor = {
+        (float)cursor_x - 30.0f,
+        (float)cursor_y - 40.0f,
+        60.0f,
+        80.0f
+        };
+        SDL_RenderTexture(renderizador, pala, NULL, &rectanguloCursor);
+    } else {
         SDL_RenderTexture(renderizador, pala, NULL, &rectanguloPala);
     }
-
-    }
+}
 
 void dibujarSoles(int cantidad_soles) { 
     if (!fuente_costo) return;
