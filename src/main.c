@@ -40,6 +40,8 @@ int main(){
     Uint64 ahora = 0;
     Uint64 ms_por_turno = 1000;
 
+    mostrarNotificacion("Presiona P para guardar la partida.", 2000);    
+
     while(jugando){
 
         //Eventos (Entradas)
@@ -127,7 +129,8 @@ int main(){
             case INTRO:
                 if (!animacionInicio(&pos_camara_x)){
                     estadoJuego = PLAY;
-                    ultimo_turno = SDL_GetTicks();    
+                    ultimo_turno = SDL_GetTicks();
+                    mostrarNotificacion("Presiona L para cargar la partida guardada.", 2000);    
                 }
                 audio_zombies(false);
                 break;

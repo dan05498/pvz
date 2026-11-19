@@ -47,6 +47,7 @@ bool animacionInicio(float*);
 
 void imprimirTextura(int, SDL_FRect, int);
 void fondoPausa();
+void pantallaDerrota();
 void dibujarUI(int);
 void dibujarSoles();
 

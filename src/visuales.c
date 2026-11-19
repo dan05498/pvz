@@ -8,7 +8,10 @@ static TTF_Font *fuente_costo = NULL;   // contb.ttf
 static TTF_Font *fuente_texto = NULL;   // Brianne_s_hand.ttf
 
 static SDL_Texture *fondo1 = NULL; 
-static SDL_Texture *fondoSelector = NULL;     
+static SDL_Texture *fondoSelector = NULL;    
+
+static SDL_Texture *defeat = NULL;
+
 static SDL_Texture *girasol_textura0 = NULL;
 static SDL_Texture *lanzaguisantes_textura0 = NULL;
 static SDL_Texture *nuez_textura0 = NULL;
@@ -76,6 +79,10 @@ bool inicializarVisuales(void) {
     }
     fondoSelector = cargarTextura("assets/images/fondoSelector.png");
     if(!fondoSelector){
+        return false;
+    }
+    defeat = cargarTextura("assets/images/defeat.png");
+    if(!defeat){
         return false;
     }
     lanzaguisantes_textura0 = cargarTextura("assets/images/lanzaguisantes_textura0.png");
@@ -192,6 +199,10 @@ void cerrarSDL(void) {
     if(fondo1) {
         SDL_DestroyTexture(fondo1); 
         fondo1 = NULL;
+    }
+    if(defeat) {
+        SDL_DestroyTexture(defeat); 
+        defeat = NULL;
     }
     if (fuente_costo) {
         TTF_CloseFont(fuente_costo);
@@ -321,6 +332,9 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
 
     if(estadoJuego == 3){   //Pantalla oscurecida en la pausa.
         fondoPausa();
+    }
+    if(estadoJuego == 4){
+        pantallaDerrota();  //Pantalla de derrota si pierdes
     }
 
     SDL_RenderPresent(renderizador);
@@ -482,6 +496,18 @@ void dibujarSoles(int cantidad_soles) {
 }
 
 void pantallaDerrota(){
+    SDL_SetRenderDrawColor(renderizador, 0, 0, 0, 128);
+    SDL_FRect pantalla = {0.0f, 0.0f, ANCHO, ALTO};
+    SDL_RenderFillRect(renderizador, &pantalla);
+
+    SDL_FRect texto = {
+        (float)((ANCHO / 2) - 300.0f),
+        (float)((ALTO / 2) - 250.0f),
+        600.0f, 
+        500.0f
+    };
+
+    SDL_RenderTexture(renderizador, defeat, NULL, &texto);
 
 }
 
