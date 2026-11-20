@@ -217,7 +217,7 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
     if (jardin[fila][col] != PASTO) {
         return 0;
     }
-    if(espera_plantar>0){
+    if(espera_plantar>0){ audio_reproducir(SFX_SinSOLES);
         return 0;
     }    
     if (soles < costo_planta(tipo)) {audio_reproducir(SFX_SinSOLES);
