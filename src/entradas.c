@@ -32,7 +32,13 @@ void cargar_configuracion(struct configuracion *cfg, const char *ruta){
     fscanf(archivo_cfg, "%d", &(*cfg).FASE_PREPARACION);
     fscanf(archivo_cfg, "%d", &(*cfg).FASE_OLEADA);
     fscanf(archivo_cfg, "%d", &(*cfg).FASE_DESCANSO);
-    
+    fscanf(archivo_cfg, "%d", &(*cfg).VIDA_LANZAHIELO);
+    fscanf(archivo_cfg, "%d", &(*cfg).COSTO_LANZAHIELO);
+    fscanf(archivo_cfg, "%d", &(*cfg).CADA_DISPARO_HIELO);
+    fscanf(archivo_cfg, "%d", &(*cfg).TURNOS_CONGELADO);
+    fscanf(archivo_cfg, "%d", &(*cfg).VIDA_GIGANTE);
+    fscanf(archivo_cfg, "%d", &(*cfg).DANO_GIGANTE);
+    fscanf(archivo_cfg, "%d", &(*cfg).CADA_PASO_GIGANTE);
 
     fclose(archivo_cfg); //cerramos el archivo para liberar la memoria
     
