@@ -272,7 +272,7 @@ static void golpear_zombie(int f, int c, int cantidad) {
         if (es_zombie(jardin[f][c])) {
             int tipo = jardin[f][c];
             quitar_vida(f, c, 1);
-            if (jardin[f][c] == PASTO){
+            if (jardin[f][c] == PASTO){audio_reproducir(SFX_zombieDD); //audio para cuando muera el zombie
                 puntaje +=puntos_zombie(tipo);
             }
         }

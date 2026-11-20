@@ -69,6 +69,7 @@ bool audio_iniciar(void){
     efectos[SFX_JEJE] = MIX_LoadAudio(mixer, "assets/sounds/pvz_jeje.mp3", true);
     efectos[SFX_SinSOLES] = MIX_LoadAudio(mixer, "assets/sounds/NO_SOLES.mp3", true);
     efectos[SFX_pausa] = MIX_LoadAudio(mixer, "assets/sounds/pvz_pausa.mp3", true);
+    efectos[SFX_zombieDD] = MIX_LoadAudio(mixer, "assets/sounds/pvz_nozombie.mp3", true);
 
     
 
