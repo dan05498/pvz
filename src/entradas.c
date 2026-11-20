@@ -9,7 +9,6 @@ void cargar_configuracion(struct configuracion *cfg, const char *ruta){
         return; //el return vacio por que es void
     }
 
-    fscanf(archivo_cfg, "%d", &(*cfg).TOTAL_OLEADAS);
     fscanf(archivo_cfg, "%d", &(*cfg).VIDA_CASA_INICIAL);
     fscanf(archivo_cfg, "%d", &(*cfg).VIDA_ZOMBIE);
     fscanf(archivo_cfg, "%d", &(*cfg).VIDA_NUEZ);
