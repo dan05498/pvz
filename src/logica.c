@@ -197,7 +197,7 @@ int costo_planta(int tipo) {  //Retornamos el costo para restarle a nuestros sol
     if (tipo == NUEZ) {
         return config.COSTO_NUEZ;
     }
-    if (tipo == lANZAHIELO) {
+    if (tipo == LANZAHIELO) {
         return config.COSTO_LANZAHIELO;
     }
     return 0;
@@ -352,8 +352,9 @@ static void resolver_choques(void) {
             if (guisantes[f][c] > 0 && es_zombie(jardin[f][c])) {
                 golpear_zombie(f, c, guisantes[f][c]);
                 guisantes[f][c] = 0;
+            }
             if(hielos[f][c]>0 && es_zombie(jardin[f][c])){
-                golpear_Zombie_hielo(f,c, hielos[f][c];
+                golpear_zombie_hielo(f,c, hielos[f][c]);
                 hielos[f][c]=0;
             }
         }
