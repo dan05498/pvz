@@ -104,7 +104,10 @@ int main(){
                     planta_elegida = NUEZ;
                 }
                 if(evento.key.key == SDLK_4){
-                    planta_elegida = PALA;
+                    planta_elegida = LANZAHIELO;
+                }
+                if(evento.key.key == SDLK_5){
+                    planta_elegida = LANZAHIELO;
                 }
             }
 
@@ -150,7 +153,7 @@ int main(){
                     audio_zombies_comiendo(false);
                 }
                 if(estado_juego() == DERROTA){
-                    printf("Perdiste\n");
+                    printf("Perdiste. Puntaje: %d  Record: %d\n", obtener_puntaje(), obtener_record());
                     estadoJuego = DEFEAT;
                     audio_reproducir(SFX_Derrota); // audio de la derrota 
                     audio_pausar(true);
@@ -171,7 +174,8 @@ int main(){
 
         loopVisuales(pos_camara_x, estadoJuego, planta_elegida);
     }
-
+    
+    guardar_record();
     cerrarSDL();
 
     return 0;
