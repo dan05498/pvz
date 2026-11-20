@@ -14,12 +14,15 @@ static SDL_Texture *defeat = NULL;
 
 static SDL_Texture *girasol_textura0 = NULL;
 static SDL_Texture *lanzaguisantes_textura0 = NULL;
+static SDL_Texture *lanzahielo_textura0 = NULL;
 static SDL_Texture *nuez_textura0 = NULL;
 static SDL_Texture *nuez_textura1 = NULL;
 static SDL_Texture *nuez_textura2 = NULL;
 static SDL_Texture *zombi_textura0 = NULL;
+static SDL_Texture *gigante_textura0 = NULL;
 static SDL_Texture *flag_zombi_textura0 = NULL;
 static SDL_Texture *guisante_textura0 = NULL;
+static SDL_Texture *hielo_textura0 = NULL;
 
 static SDL_Texture *seed_lanzaguisantes = NULL;
 static SDL_Texture *seed_girasol = NULL;
@@ -89,6 +92,10 @@ bool inicializarVisuales(void) {
     if(!lanzaguisantes_textura0){
         return false;
     }
+    lanzahielo_textura0 = cargarTextura("assets/images/lanzahielo_textura0.png");
+    if(!lanzahielo_textura0){
+        return false;
+    }
     girasol_textura0 = cargarTextura("assets/images/girasol_textura0.png");
     if(!girasol_textura0){
         return false;
@@ -109,12 +116,20 @@ bool inicializarVisuales(void) {
     if(!zombi_textura0){
         return false;
     }
+    gigante_textura0 = cargarTextura("assets/images/gigante_textura0.png");
+    if(!gigante_textura0){
+        return false;
+    }
     flag_zombi_textura0 = cargarTextura("assets/images/flag_zombi_textura0.png");
     if(!flag_zombi_textura0){
         return false;
     }
     guisante_textura0 = cargarTextura("assets/images/guisante_textura0.png");
     if(!guisante_textura0){
+        return false;
+    }
+    hielo_textura0 = cargarTextura("assets/images/hielo_textura0.png");
+    if(!hielo_textura0){
         return false;
     }
     seed_lanzaguisantes = cargarTextura("assets/images/seed_lanzaguisantes.png");
@@ -216,6 +231,10 @@ void cerrarSDL(void) {
         SDL_DestroyTexture(lanzaguisantes_textura0); 
         lanzaguisantes_textura0 = NULL;
     }
+    if(lanzahielo_textura0) {
+        SDL_DestroyTexture(lanzahielo_textura0); 
+        lanzahielo_textura0 = NULL;
+    }
     if(girasol_textura0) {
         SDL_DestroyTexture(girasol_textura0); 
         girasol_textura0 = NULL;
@@ -236,9 +255,17 @@ void cerrarSDL(void) {
         SDL_DestroyTexture(zombi_textura0); 
         zombi_textura0 = NULL;
     }
+    if(gigante_textura0) {
+        SDL_DestroyTexture(gigante_textura0); 
+        gigante_textura0 = NULL;
+    }
     if(guisante_textura0) {
         SDL_DestroyTexture(guisante_textura0); 
         guisante_textura0 = NULL;
+    }
+    if(hielo_textura0) {
+        SDL_DestroyTexture(hielo_textura0); 
+        hielo_textura0 = NULL;
     }
     if(flag_zombi_textura0) {
         SDL_DestroyTexture(flag_zombi_textura0); 
@@ -295,7 +322,7 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
             int elemento = obtener_celda(fila, columna);
 
             SDL_FRect rectangulo;
-            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){ //Con esto hago la distinción, los zombis son más altos que las plantas
+            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE || elemento == GIGANTE){ //Con esto hago la distinción, los zombis son más altos que las plantas
                 float salida_zombis = 90.0;
                 rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - salida_zombis);
                 rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
@@ -308,18 +335,26 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
                 rectangulo.h = (float)ALTO_CELDA-15;
             }
 
-            imprimirTextura(elemento, rectangulo, obtener_dano(fila, columna));
-            int guisante = obtener_guisante(fila,columna);
+            imprimirTextura(elemento, rectangulo, obtener_dano(fila, columna), obtener_congelado(fila,columna));
 
-            if(guisante){
-                SDL_FRect rectanguloGuisante = {
+            SDL_FRect rectanguloProyectil = {
                     (float)(MARGEN_X + columna * ANCHO_CELDA),
                     (float)(MARGEN_Y + fila * ALTO_CELDA),
                     (float)ANCHO_CELDA-15,
                     (float)ALTO_CELDA-15
                 };
-                imprimirTextura(GUISANTE, rectanguloGuisante, obtener_dano(fila, columna));
+            int guisante = obtener_guisante(fila,columna);
+
+            if(guisante > 0){
+                imprimirTextura(GUISANTE, rectanguloProyectil, obtener_dano(fila, columna), 0);
             }
+
+            int hielo = obtener_hielo(fila,columna);
+            
+            if(hielo > 0){
+                imprimirTextura(HIELO, rectanguloProyectil, obtener_dano(fila, columna), 0);
+            }
+
         }
     }
 
@@ -351,7 +386,7 @@ bool animacionInicio(float *pos_camara_x){
     return true;
 }
 
-void imprimirTextura(int planta, SDL_FRect rectangulo, int daño_nuez){
+void imprimirTextura(int planta, SDL_FRect rectangulo, int daño_nuez, int congelado){
     switch (planta) {
         case GIRASOL:
             SDL_RenderTexture(renderizador, girasol_textura0, NULL, &rectangulo);
@@ -369,14 +404,35 @@ void imprimirTextura(int planta, SDL_FRect rectangulo, int daño_nuez){
             }
             
             break;
+        case LANZAHIELO:
+            SDL_RenderTexture(renderizador, lanzahielo_textura0, NULL, &rectangulo);
+            break;
         case ZOMBIE:
+            if (congelado > 0){
+                SDL_SetTextureColorMod(zombi_textura0, 100, 180, 255);
+            }
             SDL_RenderTexture(renderizador, zombi_textura0, NULL, &rectangulo);
+            SDL_SetTextureColorMod(zombi_textura0, 255, 255, 255);
             break;
         case FLAG_ZOMBIE:
+            if (congelado > 0){
+                SDL_SetTextureColorMod(flag_zombi_textura0, 100, 180, 255);
+            }
             SDL_RenderTexture(renderizador, flag_zombi_textura0, NULL, &rectangulo);
+            SDL_SetTextureColorMod(flag_zombi_textura0, 255, 255, 255);
+            break;
+        case GIGANTE:
+            if (congelado > 0){
+                SDL_SetTextureColorMod(gigante_textura0, 100, 180, 255);
+            }
+            SDL_RenderTexture(renderizador, gigante_textura0, NULL, &rectangulo);
+            SDL_SetTextureColorMod(gigante_textura0, 255, 255, 255);
             break;
         case GUISANTE:
             SDL_RenderTexture(renderizador, guisante_textura0, NULL, &rectangulo);
+            break;
+        case HIELO:
+            SDL_RenderTexture(renderizador, hielo_textura0, NULL, &rectangulo);
             break;
     }
 }

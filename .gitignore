@@ -1,3 +1,4 @@
 bin/
 obj/
 config/partida_guardada.txt
+config/record.txt

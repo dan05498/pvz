@@ -45,7 +45,7 @@ void loopVisuales(float, int, int);
 
 bool animacionInicio(float*);
 
-void imprimirTextura(int, SDL_FRect, int);
+void imprimirTextura(int, SDL_FRect, int, int);
 void fondoPausa();
 void pantallaDerrota();
 void dibujarUI(int);
