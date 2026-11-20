@@ -205,7 +205,8 @@ int costo_planta(int tipo) {  //Retornamos el costo para restarle a nuestros sol
 
 int plantar(int tipo, int fila, int col) { //Función para plantar
     if (estado != JUGANDO || !es_planta(tipo)) {  //Restricciones, no tenemos soles, fuera de la matriz
-        return 0;							     //estamos intentando plantar donde hay otra planta, etc
+        return 0;		audio_reproducir(SFX_SinSOLES);					     //estamos intentando plantar donde hay otra planta, etc
+        
     }
     if (fila < 0 || fila >= FILAS_JUEGO) {
         return 0;
@@ -219,8 +220,9 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
     if(espera_plantar>0){
         return 0;
     }    
-    if (soles < costo_planta(tipo)) {
+    if (soles < costo_planta(tipo)) {audio_reproducir(SFX_SinSOLES);
         return 0;
+        
     }
     soles -= costo_planta(tipo);   //nos restamos el costo de la planta 
     espera_plantar = config.ESPERA_PLANTAR;
