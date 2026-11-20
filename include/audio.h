@@ -15,6 +15,8 @@ typedef enum{ // se puede ver en la clase de hoy lunes 9/11
     SFX_SinSOLES,
     SFX_pausa,
     SFX_zombieDD,
+    SFX_zombieCONGE,
+    SFX_GIGA_ZOMB,
     SFX_Total,
 } efecto; //son sonidos que no se repiten en bucle los bool suelen ser para bucles
 

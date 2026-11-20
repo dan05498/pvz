@@ -1,5 +1,0 @@
-0     cesped
-2     interfazzz
-5     casa
-4     arbusto
-3     regeneracion de zombies 

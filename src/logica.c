@@ -312,7 +312,7 @@ static void mover_guisantes(void) {
 
 static void golpear_zombie_hielo(int f, int c, int cantidad) {
     golpear_zombie(f, c, cantidad);
-    if (es_zombie(jardin[f][c])) {
+    if (es_zombie(jardin[f][c])) { audio_reproducir(SFX_zombieCONGE);
         congelado[f][c] = config.TURNOS_CONGELADO;
     }
 }
@@ -443,7 +443,7 @@ static int aparecer_zombie(void) {
         bandera_por_salir = 0;
     } else if (gigantes_por_salir > 0 && zombies_por_salir > 0 && rand() % zombies_por_salir < gigantes_por_salir) {
         tipo = GIGANTE;
-        gigantes_por_salir--;
+        gigantes_por_salir--;audio_reproducir(SFX_GIGA_ZOMB);
     }
     jardin[f][ultima] = tipo;
     vida[f][ultima] = vida_inicial(tipo);
