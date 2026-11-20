@@ -3,6 +3,7 @@
 
 //configuracion
     struct configuracion{
+        int TOTAL_OLEADAS;
         int VIDA_CASA_INICIAL; 
         int VIDA_ZOMBIE;
         int VIDA_NUEZ;
