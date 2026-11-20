@@ -11,11 +11,14 @@
 #define GIRASOL          1    //Plantas
 #define LANZAGUISANTES   2
 #define NUEZ             3
+#define LANZAHIELO       4
 
 #define ZOMBIE           10   //Zombies
 #define FLAG_ZOMBIE      11
+#define GIGANTE          12
 
 #define GUISANTE         20   
+#define HIELO            21
 
 #define CASA             30
 #define PALA             40
@@ -41,6 +44,11 @@ int obtener_vida_casa(void);
 int obtener_oleada(void);
 int obtener_total_oleadas(void);
 int costo_planta(int tipo);
+int obtener_hielo(int fila, int col);
+int obtener_congelado(int fila, int col);
+int obtener_puntaje(void);
+int obtener_record(void);
+void guardar_record(void);
 
 
 bool hay_zombie(void);
