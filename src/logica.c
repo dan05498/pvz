@@ -29,6 +29,7 @@ static int oleada;
 static int espera;
 static int zombies_por_salir;
 static int bandera_por_salir;
+static int espera_plantar;
 
 
 static int es_planta(int codigo) {  //si es planta el zombie o el guisante toma una decisión
@@ -168,6 +169,7 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
 
     soles_caidos=0;
     puntaje = 0;
+    espera_plantar=0;
     gigantes_por_salir = 0;
     cargar_record();
     estado = JUGANDO;	//iniciamos los indicadores
@@ -213,10 +215,14 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
     if (jardin[fila][col] != PASTO) {
         return 0;
     }
+    if(espera_plantar>0){
+        return 0;
+    }    
     if (soles < costo_planta(tipo)) {
         return 0;
     }
     soles -= costo_planta(tipo);   //nos restamos el costo de la planta 
+    espera_plantar = config.ESPERA_PLANTAR;
     jardin[fila][col] = tipo;audio_reproducir(SFX_Plantar);		//ponemos la planta en la matriz
     vida[fila][col] = vida_inicial(tipo);	//ponemos la vida de la planta
     return 1;
@@ -444,7 +450,10 @@ static void empezar_oleada(void) {
     audio_reproducir(SFX_Oleada);
     oleada++;
     fase = EN_OLEADA;
-    zombies_por_salir = 3 * oleada + 2;
+    zombies_por_salir = 4 + oleada / 2;
+    if (zombies_por_salir > 12) {
+        zombies_por_salir = 12;
+    }
     bandera_por_salir = 0;
     gigantes_por_salir = 0;
 
@@ -454,6 +463,9 @@ static void empezar_oleada(void) {
     }
     if (oleada >= 4) {
         gigantes_por_salir = (oleada - 2) / 2;
+        if (gigantes_por_salir > zombies_por_salir / 2) {
+            gigantes_por_salir = zombies_por_salir / 2;
+        }
     }
 }
 
@@ -485,6 +497,9 @@ void actualizar_juego(void) { //función con la que se actualiza el juego
         return;
     }
     turno++;  //añadimos un turno
+    if(espera_plantar>0){
+        espera_plantar--;
+    }    
     generar_soles(); //generamos soles
     mover_guisantes(); //si hay lanzaguisantes disparando, movemos guisante
     mover_hielos();
@@ -524,10 +539,6 @@ int obtener_vida_casa(void) {
 
 int obtener_oleada(void) {
     return oleada;
-}
-
-int obtener_total_oleadas(void) {
-    return config.TOTAL_OLEADAS;
 }
 
 int obtener_guisante(int fila, int col) {
