@@ -69,6 +69,7 @@ static int vida_inicial(int codigo) {  //Vida de las plantas
     }
     if (codigo== GIGANTE) {
         return config.VIDA_GIGANTE + oleada/2;
+    }
     if (es_zombie(codigo)) {
         return config.VIDA_ZOMBIE + oleada/2;
     }
