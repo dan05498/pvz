@@ -39,7 +39,7 @@ void cargar_configuracion(struct configuracion *cfg, const char *ruta){
     fscanf(archivo_cfg, "%d", &(*cfg).VIDA_GIGANTE);
     fscanf(archivo_cfg, "%d", &(*cfg).DANO_GIGANTE);
     fscanf(archivo_cfg, "%d", &(*cfg).CADA_PASO_GIGANTE);
-
+    fscanf(archivo_cfg, "%d", &(*cfg).ESPERA_PLANTAR);
     fclose(archivo_cfg); //cerramos el archivo para liberar la memoria
     
 }
