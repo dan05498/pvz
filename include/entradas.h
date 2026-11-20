@@ -32,6 +32,7 @@
         int VIDA_GIGANTE;
         int DANO_GIGANTE;
         int CADA_PASO_GIGANTE;
+        int ESPERA_PLANTAR;
     };//sin este puntocoma el main da error
 
     void cargar_configuracion(struct configuracion *cfg, const char *ruta);
