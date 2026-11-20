@@ -147,8 +147,8 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
                 fscanf(archivo_mapa, "%d", &jardin[f][c]);
                 vida[f][c] = 0;
                 guisantes[f][c] = 0;
-                hielos[f][0] = 0;
-                congelado[f][0] = 0;
+                hielos[f][c] = 0;
+                congelado[f][c] = 0;
             }
         }
         fclose(archivo_mapa);
@@ -205,7 +205,8 @@ int costo_planta(int tipo) {  //Retornamos el costo para restarle a nuestros sol
 
 int plantar(int tipo, int fila, int col) { //Función para plantar
     if (estado != JUGANDO || !es_planta(tipo)) {  //Restricciones, no tenemos soles, fuera de la matriz
-        return 0;							     //estamos intentando plantar donde hay otra planta, etc
+        return 0;		audio_reproducir(SFX_SinSOLES);					     //estamos intentando plantar donde hay otra planta, etc
+        
     }
     if (fila < 0 || fila >= FILAS_JUEGO) {
         return 0;
@@ -219,8 +220,9 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
     if(espera_plantar>0){
         return 0;
     }    
-    if (soles < costo_planta(tipo)) {
+    if (soles < costo_planta(tipo)) {audio_reproducir(SFX_SinSOLES);
         return 0;
+        
     }
     soles -= costo_planta(tipo);   //nos restamos el costo de la planta 
     espera_plantar = config.ESPERA_PLANTAR;
@@ -420,7 +422,7 @@ static void mover_zombies(void) {
 bool hay_zombie_comiendo(void){
     for(int f=0; f<FILAS_JUEGO ; f++){ //recorre filas
         for(int c=1; c<COLUMNAS_JUEGO; c++){ //recorre columnas
-            if(es_zombie(jardin[f][c]) && es_planta(jardin[f][c-1])){ // si la es zombie tiene un es planta al lado significa que le quitara vida por lo tanto podemos modificar el booleando para que suene el sonido de comida
+            if(es_zombie(jardin[f][c]) && congelado[f][c] && es_planta(jardin[f][c-1])){ // si la es zombie tiene un es planta al lado significa que le quitara vida por lo tanto podemos modificar el booleando para que suene el sonido de comida
                 return true; // cambia el bool a true
             }
         }
@@ -439,7 +441,7 @@ static int aparecer_zombie(void) {
     if (bandera_por_salir) {
         tipo = FLAG_ZOMBIE;
         bandera_por_salir = 0;
-    } else if (gigantes_por_salir > 0 && rand() % zombies_por_salir < gigantes_por_salir) {
+    } else if (gigantes_por_salir > 0 && zombies_por_salir > 0 && rand() % zombies_por_salir < gigantes_por_salir) {
         tipo = GIGANTE;
         gigantes_por_salir--;
     }

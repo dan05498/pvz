@@ -56,6 +56,7 @@ int main(){
                 if(evento.key.key == SDLK_ESCAPE){ // asignamos la tecla escape
                     if(estadoJuego == PLAY){       // sie el estado de juego esta en play le ponemos pausa
                         estadoJuego = PAUSE;
+                        audio_reproducir(SFX_pausa);
                         audio_pausar(true); //aprovechando pausamos la musica
                         audio_zombies(false); // para el sonido de los zombies
                         audio_zombies_comiendo(false); // paramos el sonido si los zombies estaban comiendo
