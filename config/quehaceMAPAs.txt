@@ -1,0 +1,9 @@
+el mapa.txt osea el jardin es el juego normal como se conoce
+
+el mapa_tumbas.txt es el jardin nocturno con tumbas las cuales no permiten que plantemos plantas en esa posicion
+[ el numero 888 van a ser consideradas las tumbas ]
+
+
+
+el mapa_tejado.txt es el mapa basado en el tejado donde solo en las macetas se pueden plantar plantas
+[el numero 555 van a ser las macetas solo aqui se puede plantar plantas, agregar macetas las cuales usen el numero 555 en el mapa]
