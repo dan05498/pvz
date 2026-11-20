@@ -26,7 +26,13 @@
         int FASE_PREPARACION;
         int FASE_OLEADA;
         int FASE_DESCANSO;
-
+        int VIDA_LANZAHIELO;
+        int COSTO_LANZAHIELO;
+        int CADA_DISPARO_HIELO;
+        int TURNOS_CONGELADO;
+        int VIDA_GIGANTE;
+        int DANO_GIGANTE;
+        int CADA_PASO_GIGANTE;
     };//sin este puntocoma el main da error
 
     void cargar_configuracion(struct configuracion *cfg, const char *ruta);
