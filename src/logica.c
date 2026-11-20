@@ -13,6 +13,11 @@ static struct configuracion config;
 static int jardin[FILAS_JUEGO][COLUMNAS_JUEGO];  //Matriz de Juego
 static int vida[FILAS_JUEGO][COLUMNAS_JUEGO];   //Matriz con la vida de las cosas del jardín
 static int guisantes[FILAS_JUEGO][COLUMNAS_JUEGO];
+static int hielos[FILAS_JUEGO][COLUMNAS_JUEGO];
+static int congelado[FILAS_JUEGO][COLUMNAS_JUEGO];
+static int puntaje;
+static int record;
+static int gigantes_por_salir;
 static int soles_caidos;
 
 static int estado;   //jugando, victoria, derrota
@@ -27,11 +32,28 @@ static int bandera_por_salir;
 
 
 static int es_planta(int codigo) {  //si es planta el zombie o el guisante toma una decisión
-    return codigo == GIRASOL || codigo == LANZAGUISANTES || codigo == NUEZ;
+    return codigo == GIRASOL || codigo == LANZAGUISANTES || codigo == NUEZ || codigo == LANZAHIELO;
 }
 
 static int es_zombie(int codigo) { //Si es zombie el zombie o guisante toma una decisión
-    return codigo == ZOMBIE || codigo == FLAG_ZOMBIE;
+    return codigo == ZOMBIE || codigo == FLAG_ZOMBIE || codigo== GIGANTE;
+}
+
+static int dano_zombie(int tipo) {
+    if (tipo == GIGANTE) {
+        return config.DANO_GIGANTE;
+    }
+    return 1;
+}
+
+static int puntos_zombie(int tipo) {
+    if (tipo == GIGANTE) {
+        return 50;
+    }
+    if (tipo == FLAG_ZOMBIE) {
+        return 15;
+    }
+    return 10;
 }
 
 static int vida_inicial(int codigo) {  //Vida de las plantas
@@ -44,8 +66,10 @@ static int vida_inicial(int codigo) {  //Vida de las plantas
     if (codigo == LANZAGUISANTES) {
         return config.VIDA_LANZAGUISANTES;
     }
+    if (codigo== GIGANTE) {
+        return config.VIDA_GIGANTE + oleada/2;
     if (es_zombie(codigo)) {
-        return config.VIDA_ZOMBIE;
+        return config.VIDA_ZOMBIE + oleada/2;
     }
     return 0;
 }
@@ -53,10 +77,11 @@ static int vida_inicial(int codigo) {  //Vida de las plantas
 static void dejar_pasto(int f, int c) {  //Cada que el zombie o guisante se mueve devolvemos pasto
     jardin[f][c] = PASTO;
     vida[f][c] = 0;
+    congelado[f][c]=0;
 }
 
-static void quitar_vida(int f, int c) {   //quitamos la vida en la matriz de vida
-    vida[f][c]--;
+static void quitar_vida(int f, int c, int cantidad) {   //quitamos la vida en la matriz de vida
+    vida[f][c]-=cantidad;
     if (vida[f][c] <= 0) {
         dejar_pasto(f, c);
     }
@@ -87,6 +112,28 @@ static int hay_zombie_a_la_derecha(int f, int c) {  //sabemos si el lanzaguisant
     return 0;
 }
 
+static void cargar_record(void) {
+    record = 0;
+    FILE *archivo = fopen("config/record.txt", "r");
+    if (archivo == NULL) {
+        return;
+    }
+    fscanf(archivo, "%d", &record);
+    fclose(archivo);
+}
+
+void guardar_record(void) {
+    if (puntaje <= record) {
+        return;
+    }
+    record = puntaje;
+    FILE *archivo = fopen("config/record.txt", "w");
+    if (archivo == NULL) {
+        return;
+    }
+    fprintf(archivo, "%d\n", record);
+    fclose(archivo);
+}
 
 void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego y vida
     config = *cfg;
@@ -98,6 +145,8 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
                 fscanf(archivo_mapa, "%d", &jardin[f][c]);
                 vida[f][c] = 0;
                 guisantes[f][c] = 0;
+                hielos[f][0] = 0;
+                congelado[f][0] = 0;
             }
         }
         fclose(archivo_mapa);
@@ -111,11 +160,16 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
                 jardin[f][c] = PASTO;
                 vida[f][c] = 0;
                 guisantes[f][c] = 0;
+                hielos[f][c] = 0;
+                congelado[f][c] = 0;
             }
         }
     }
 
     soles_caidos=0;
+    puntaje = 0;
+    gigantes_por_salir = 0;
+    cargar_record();
     estado = JUGANDO;	//iniciamos los indicadores
     fase = EN_PREPARACION;
     turno = 0;
@@ -139,6 +193,9 @@ int costo_planta(int tipo) {  //Retornamos el costo para restarle a nuestros sol
     }
     if (tipo == NUEZ) {
         return config.COSTO_NUEZ;
+    }
+    if (tipo == lANZAHIELO) {
+        return config.COSTO_LANZAHIELO;
     }
     return 0;
 }
@@ -204,7 +261,11 @@ static void generar_soles(void) {
 static void golpear_zombie(int f, int c, int cantidad) {
     for (int i = 0; i < cantidad; i++) {
         if (es_zombie(jardin[f][c])) {
-            quitar_vida(f, c);
+            int tipo = jardin[f][c];
+            quitar_vida(f, c, 1);
+            if (jardin[f][c] == PASTO){
+                puntaje +=puntos_zombie(tipo);
+            }
         }
     }
 }
@@ -240,25 +301,68 @@ static void mover_guisantes(void) {
     }
 }
 
+static void golpear_zombie_hielo(int f, int c, int cantidad) {
+    golpear_zombie(f, c, cantidad);
+    if (es_zombie(jardin[f][c])) {
+        congelado[f][c] = config.TURNOS_CONGELADO;
+    }
+}
+
+static void soltar_hielo(int f, int c) {
+    if (c >= COLUMNAS_JUEGO) {
+        return;
+    }
+    if (es_zombie(jardin[f][c])) {
+        golpear_zombie_hielo(f, c, 1);
+    } else {
+        hielos[f][c]++;
+    }
+}
+
+static void mover_hielos(void) {
+    for (int f = 0; f < FILAS_JUEGO; f++) {
+        for (int c = COLUMNAS_JUEGO - 1; c >= 1; c--) {
+            int cantidad = hielos[f][c];
+            if (cantidad == 0) {
+                continue;
+            }
+            hielos[f][c] = 0;
+            if (c + 1 >= COLUMNAS_JUEGO) {
+                continue;
+            }
+            if (es_zombie(jardin[f][c + 1])) {
+                golpear_zombie_hielo(f, c + 1, cantidad);
+            } else {
+                hielos[f][c + 1] += cantidad;
+            }
+        }
+    }
+}
+
 static void resolver_choques(void) {
     for (int f = 0; f < FILAS_JUEGO; f++) {
         for (int c = 1; c < COLUMNAS_JUEGO; c++) {
             if (guisantes[f][c] > 0 && es_zombie(jardin[f][c])) {
                 golpear_zombie(f, c, guisantes[f][c]);
                 guisantes[f][c] = 0;
+            if(hielos[f][c]>0 && es_zombie(jardin[f][c])){
+                golpear_Zombie_hielo(f,c, hielos[f][c];
+                hielos[f][c]=0;
             }
         }
     }
 }
 
-static void disparar_plantas(void) {   //Si estamos en turno de disparo el lanzaguisante dispara
-    if (turno % config.CADA_DISPARO != 0) {  
-        return;
-    }
+
+static void disparar_plantas(void) {
     for (int f = 0; f < FILAS_JUEGO; f++) {
-        for (int c = 1; c < COLUMNAS_JUEGO; c++) { //recorremos la matriz, si es lanzaguisante y hay zombie dispara
-            if (jardin[f][c] == LANZAGUISANTES && hay_zombie_a_la_derecha(f, c)) {
-                soltar_guisante(f, c + 1); 
+        for (int c = 1; c < COLUMNAS_JUEGO; c++) {
+            if (jardin[f][c] == LANZAGUISANTES && turno % config.CADA_DISPARO == 0 && hay_zombie_a_la_derecha(f, c)) {
+                soltar_guisante(f, c + 1);
+                audio_reproducir(SFX_Guizante);
+            }
+            if (jardin[f][c] == LANZAHIELO && turno % config.CADA_DISPARO_HIELO == 0 && hay_zombie_a_la_derecha(f, c)) {
+                soltar_hielo(f, c + 1);
                 audio_reproducir(SFX_Guizante);
             }
         }
@@ -266,29 +370,37 @@ static void disparar_plantas(void) {   //Si estamos en turno de disparo el lanza
 }
 
 
-static void mover_zombies(void) {  //para que zombie avanze cada X turnos
+static void mover_zombies(void) {
     for (int f = 0; f < FILAS_JUEGO; f++) {
         for (int c = 1; c < COLUMNAS_JUEGO; c++) {
             int tipo = jardin[f][c];
-            if (!es_zombie(tipo)) { //si no es zombie, sigue
+            if (!es_zombie(tipo)) {
                 continue;
             }
-            int cada = config.CADA_PASO_ZOMBIE;  //buscamos cada cuanto el zombie da paso
+            if (congelado[f][c] > 0) {
+                congelado[f][c]--;
+                continue;
+            }
+            int cada = config.CADA_PASO_ZOMBIE;
             if (tipo == FLAG_ZOMBIE) {
-                cada = config.CADA_PASO_FLAG; //si es flag buscamos el tiempo de flag
+                cada = config.CADA_PASO_FLAG;
             }
-            if (turno % cada != 0) { //si no estamos en turno de paso, no camina
+            if (tipo == GIGANTE) {
+                cada = config.CADA_PASO_GIGANTE;
+            }
+            if (turno % cada != 0) {
                 continue;
             }
-            int delante = jardin[f][c - 1];  //si adelante tiene algun prop le quita vida
+            int dano = dano_zombie(tipo);
+            int delante = jardin[f][c - 1];
             if (delante == CASA) {
-                vida_casa--;
+                vida_casa -= dano;
                 audio_reproducir(SFX_AWP);
                 dejar_pasto(f, c);
                 audio_reproducir(SFX_JEJE);
             } else if (es_planta(delante)) {
-                quitar_vida(f, c - 1);
-            } else if (delante == PASTO) { //si es pasto, avanza, avanza su vida y deja el pasto
+                quitar_vida(f, c - 1, dano);
+            } else if (delante == PASTO) {
                 jardin[f][c - 1] = tipo;
                 vida[f][c - 1] = vida[f][c];
                 dejar_pasto(f, c);
@@ -309,57 +421,64 @@ bool hay_zombie_comiendo(void){
 }
 
 
-static int aparecer_zombie(void) {  //aparece zombie
-    int f = rand() % FILAS_JUEGO;	//fila donde aparecera
-    int ultima = COLUMNAS_JUEGO - 1;  //para q aparezca en la derecha
-    if (jardin[f][ultima] != PASTO) {  //si no es pasto no aparece
+static int aparecer_zombie(void) {
+    int f = rand() % FILAS_JUEGO;
+    int ultima = COLUMNAS_JUEGO - 1;
+    if (jardin[f][ultima] != PASTO) {
         return 0;
     }
-    if (bandera_por_salir) {  //si estamos esperando un flag zombie
-        jardin[f][ultima] = FLAG_ZOMBIE;
+    int tipo = ZOMBIE;
+    if (bandera_por_salir) {
+        tipo = FLAG_ZOMBIE;
         bandera_por_salir = 0;
-    } else {			//si spawnea solo un zombie normal
-        jardin[f][ultima] = ZOMBIE;
+    } else if (gigantes_por_salir > 0 && rand() % zombies_por_salir < gigantes_por_salir) {
+        tipo = GIGANTE;
+        gigantes_por_salir--;
     }
-    vida[f][ultima] = config.VIDA_ZOMBIE; //ponemos la vida
+    jardin[f][ultima] = tipo;
+    vida[f][ultima] = vida_inicial(tipo);
     return 1;
 }
 
-static void empezar_oleada(void) {  //si empieza la oleada
+static void empezar_oleada(void) {
     audio_reproducir(SFX_Oleada);
     oleada++;
     fase = EN_OLEADA;
-    zombies_por_salir = 3 * oleada + 2;  //cantidad de zombies q aparecen x oleada
+    zombies_por_salir = 3 * oleada + 2;
     bandera_por_salir = 0;
+    gigantes_por_salir = 0;
 
-    if (oleada % 2 == 0 || oleada == config.TOTAL_OLEADAS) { //si es oleada par o es la última aparece un flag
+    if (oleada % 2 == 0) {
         zombies_por_salir += 3;
         bandera_por_salir = 1;
+    }
+    if (oleada >= 4) {
+        gigantes_por_salir = (oleada - 2) / 2;
     }
 }
 
 static void controlar_oleadas(void) {
-    if (fase == EN_PREPARACION || fase == EN_DESCANSO) { //si estamos en prep o descanso
-        espera--;  //reducimos la espera de oleada
+    if (fase == EN_PREPARACION || fase == EN_DESCANSO) {
+        espera--;
         if (espera <= 0) {
             empezar_oleada();
         }
     } else if (fase == EN_OLEADA) {
-        if (zombies_por_salir > 0) {  //si nos quedan zombies por salir, aparecemos zombie
-            if (turno % config.CADA_ZOMBIE_NUEVO == 0 && aparecer_zombie()) {
+        if (zombies_por_salir > 0) {
+            int cada_nuevo = config.CADA_ZOMBIE_NUEVO - oleada / 4;
+            if (cada_nuevo < 2) {
+                cada_nuevo = 2;
+            }
+            if (turno % cada_nuevo == 0 && aparecer_zombie()) {
                 zombies_por_salir--;
             }
-        } else if (contar_zombies() == 0) { //si no hay zombies, y no quedan oleadas, ganamos
-            if (oleada >= config.TOTAL_OLEADAS) {
-                estado = VICTORIA;
-            } else {  //Sino empezamos el descanso
-                fase = EN_DESCANSO;
-                espera = config.TURNOS_DESCANSO;
-            }
+        } else if (contar_zombies() == 0) {
+            puntaje += 50 * oleada;
+            fase = EN_DESCANSO;
+            espera = config.TURNOS_DESCANSO;
         }
     }
 }
-
 
 void actualizar_juego(void) { //función con la que se actualiza el juego
     if (estado != JUGANDO) {
@@ -368,12 +487,14 @@ void actualizar_juego(void) { //función con la que se actualiza el juego
     turno++;  //añadimos un turno
     generar_soles(); //generamos soles
     mover_guisantes(); //si hay lanzaguisantes disparando, movemos guisante
+    mover_hielos();
     disparar_plantas(); //si un guisante debe disparar lo hace
     mover_zombies(); //movemos zombies
     resolver_choques();
     if (vida_casa <= 0) {  //si nos quedamos sin vida en la casa, perdemos
         vida_casa = 0;
         estado = DERROTA;
+        guardar_record();
         return;
     }
     controlar_oleadas();
@@ -436,6 +557,31 @@ int obtener_dano(int fila, int col) {
 
 int obtener_soles_caidos(void) {
     return soles_caidos;
+}
+
+int obtener_hielo(int fila, int col) {
+    if (fila < 0 || fila >= FILAS_JUEGO || col < 0 || col >= COLUMNAS_JUEGO) {
+        return 0;
+    }
+    return hielos[fila][col];
+}
+
+int obtener_congelado(int fila, int col) {
+    if (fila < 0 || fila >= FILAS_JUEGO || col < 0 || col >= COLUMNAS_JUEGO) {
+        return 0;
+    }
+    return congelado[fila][col];
+}
+
+int obtener_puntaje(void) {
+    return puntaje;
+}
+
+int obtener_record(void) {
+    if (puntaje > record) {
+        return puntaje;
+    }
+    return record;
 }
 
 void cargar_partida(void){
