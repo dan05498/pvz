@@ -90,16 +90,31 @@ static int hay_zombie_a_la_derecha(int f, int c) {  //sabemos si el lanzaguisant
 
 void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego y vida
     config = *cfg;
-    for (int f = 0; f < FILAS_JUEGO; f++) {
-        jardin[f][0] = CASA;
-        vida[f][0] = 0;
-        guisantes[f][0]=0;
-        for (int c = 1; c < COLUMNAS_JUEGO; c++) {
-            jardin[f][c] = PASTO;
-            vida[f][c] = 0;
-            guisantes[f][c]=0;
+    
+    FILE *archivo_mapa = fopen("config/mapa.txt", "r");
+    if (archivo_mapa != NULL) {
+        for (int f = 0; f < FILAS_JUEGO; f++) {
+            for (int c = 0; c < COLUMNAS_JUEGO; c++) {
+                fscanf(archivo_mapa, "%d", &jardin[f][c]);
+                vida[f][c] = 0;
+                guisantes[f][c] = 0;
+            }
+        }
+        fclose(archivo_mapa);
+    } else {
+        // Respaldo por si no encuentra el archivo manera manual:
+        for (int f = 0; f < FILAS_JUEGO; f++) {
+            jardin[f][0] = CASA;
+            vida[f][0] = 0;
+            guisantes[f][0] = 0;
+            for (int c = 1; c < COLUMNAS_JUEGO; c++) {
+                jardin[f][c] = PASTO;
+                vida[f][c] = 0;
+                guisantes[f][c] = 0;
+            }
         }
     }
+
     soles_caidos=0;
     estado = JUGANDO;	//iniciamos los indicadores
     fase = EN_PREPARACION;
