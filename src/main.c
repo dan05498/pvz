@@ -6,16 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-typedef enum {
-    MENU,
-    INTRO,
-    PLAY,
-    PAUSE,
-    DEFEAT,
-    VICTORY
-} estado;
-
 int main(){
     srand(time(NULL));
     struct configuracion cfg;

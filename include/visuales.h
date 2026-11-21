@@ -29,6 +29,15 @@
 
 #define VEL_ZOMBI_GUISANTE      25.0f
 
+typedef enum {
+    MENU,
+    INTRO,
+    PLAY,
+    PAUSE,
+    DEFEAT,
+    VICTORY
+} estado;
+
 // Funciones de inicio y cierre
 bool inicializarVisuales(void);
 void cerrarSDL(void);

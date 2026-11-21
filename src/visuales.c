@@ -335,48 +335,49 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
         RenderizarFondo(renderizador, fondo1, pos_camara_x);
     }
 
-    for (int fila = 0;fila < FILAS_JUEGO;fila++) {
-        for (int columna = 0; columna < COLUMNAS_JUEGO;columna++){    
+    if(estadoJuego == PLAY){
+        for (int fila = 0;fila < FILAS_JUEGO;fila++) {
+            for (int columna = 0; columna < COLUMNAS_JUEGO;columna++){    
 
-            int elemento = obtener_celda(fila, columna);
+                int elemento = obtener_celda(fila, columna);
 
-            SDL_FRect rectangulo;
-            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){ //Con esto hago la distinción, los zombis son más altos que las plantas
-                float salida_zombis = 90.0;
-                rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - salida_zombis);
-                rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
-                rectangulo.w = (float)ANCHO_CELDA + salida_zombis;
-                rectangulo.h = (float)ALTO_CELDA + salida_zombis;
-            } else {
-                rectangulo.x = (float)(MARGEN_X + columna * ANCHO_CELDA);
-                rectangulo.y = (float)(MARGEN_Y + fila * ALTO_CELDA);
-                rectangulo.w = (float)ANCHO_CELDA-15;
-                rectangulo.h = (float)ALTO_CELDA-15;
+                SDL_FRect rectangulo;
+                if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){ //Con esto hago la distinción, los zombis son más altos que las plantas
+                    float salida_zombis = 90.0;
+                    rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - salida_zombis);
+                    rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
+                    rectangulo.w = (float)ANCHO_CELDA + salida_zombis;
+                    rectangulo.h = (float)ALTO_CELDA + salida_zombis;
+                } else {
+                    rectangulo.x = (float)(MARGEN_X + columna * ANCHO_CELDA);
+                    rectangulo.y = (float)(MARGEN_Y + fila * ALTO_CELDA);
+                    rectangulo.w = (float)ANCHO_CELDA-15;
+                    rectangulo.h = (float)ALTO_CELDA-15;
+                }
+
+                imprimirTextura(elemento, rectangulo, obtener_dano(fila, columna), obtener_congelado(fila,columna));
+
+                SDL_FRect rectanguloProyectil = {
+                        (float)(MARGEN_X + columna * ANCHO_CELDA),
+                        (float)(MARGEN_Y + fila * ALTO_CELDA),
+                        (float)ANCHO_CELDA-15,
+                        (float)ALTO_CELDA-15
+                    };
+                int guisante = obtener_guisante(fila,columna);
+
+                if(guisante > 0){
+                    imprimirTextura(GUISANTE, rectanguloProyectil, obtener_dano(fila, columna), 0);
+                }
+
+                int hielo = obtener_hielo(fila,columna);
+                
+                if(hielo > 0){
+                    imprimirTextura(HIELO, rectanguloProyectil, obtener_dano(fila, columna), 0);
+                }
+
             }
-
-            imprimirTextura(elemento, rectangulo, obtener_dano(fila, columna), obtener_congelado(fila,columna));
-
-            SDL_FRect rectanguloProyectil = {
-                    (float)(MARGEN_X + columna * ANCHO_CELDA),
-                    (float)(MARGEN_Y + fila * ALTO_CELDA),
-                    (float)ANCHO_CELDA-15,
-                    (float)ALTO_CELDA-15
-                };
-            int guisante = obtener_guisante(fila,columna);
-
-            if(guisante > 0){
-                imprimirTextura(GUISANTE, rectanguloProyectil, obtener_dano(fila, columna), 0);
-            }
-
-            int hielo = obtener_hielo(fila,columna);
-            
-            if(hielo > 0){
-                imprimirTextura(HIELO, rectanguloProyectil, obtener_dano(fila, columna), 0);
-            }
-
         }
     }
-
     
     
     dibujarUI(planta_elegida);
@@ -384,10 +385,10 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
 
     renderizarNotificacion();
 
-    if(estadoJuego == 3){   //Pantalla oscurecida en la pausa.
+    if(estadoJuego == PAUSE){   //Pantalla oscurecida en la pausa.
         fondoPausa();
     }
-    if(estadoJuego == 4){
+    if(estadoJuego == DEFEAT){
         pantallaDerrota();  //Pantalla de derrota si pierdes
     }
 
