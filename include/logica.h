@@ -46,6 +46,7 @@ int obtener_oleada(void);
 int costo_planta(int tipo);
 int obtener_hielo(int fila, int col);
 int obtener_congelado(int fila, int col);
+int obtener_tumbas(int fila, int col);
 int obtener_puntaje(void);
 int obtener_record(void);
 void guardar_record(void);

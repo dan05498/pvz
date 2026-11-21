@@ -39,4 +39,5 @@
     void cargar_mapa(int matriz[8][13], int *filas, int *columnas, const char *ruta);
     void cargar_base(int base[5][11], int *filas2, int *columnas2, const char *ruta1);
 
+    void generar_tumbas(int mapa[5][11], const char *tumbass);
     #endif

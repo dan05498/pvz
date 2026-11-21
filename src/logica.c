@@ -11,11 +11,12 @@
 
 static struct configuracion config;
 
-static int jardin[FILAS_JUEGO][COLUMNAS_JUEGO];  //Matriz de Juego
-static int vida[FILAS_JUEGO][COLUMNAS_JUEGO];   //Matriz con la vida de las cosas del jardín
-static int guisantes[FILAS_JUEGO][COLUMNAS_JUEGO];
-static int hielos[FILAS_JUEGO][COLUMNAS_JUEGO];
-static int congelado[FILAS_JUEGO][COLUMNAS_JUEGO];
+static int tumbas[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};     //matriz de tumbas
+static int jardin[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};  //Matriz de Juego
+static int vida[FILAS_JUEGO][COLUMNAS_JUEGO] = {8};   //Matriz con la vida de las cosas del jardín
+static int guisantes[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};
+static int hielos[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};
+static int congelado[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};
 static int puntaje;
 static int record;
 static int gigantes_por_salir;
@@ -141,64 +142,11 @@ void guardar_record(void) {
 void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego y vida
     config = *cfg;
     
-    FILE *archivo_mapa = fopen("config/mapa.txt", "r");
-    if (archivo_mapa != NULL) {
-        for (int f = 0; f < FILAS_JUEGO; f++) {
-            for (int c = 0; c < COLUMNAS_JUEGO; c++) {
-                fscanf(archivo_mapa, "%d", &jardin[f][c]);
-                vida[f][c] = 0;
-                guisantes[f][c] = 0;
-                hielos[f][c] = 0;
-                congelado[f][c] = 0;
-            }
-        }
-        fclose(archivo_mapa);
-    } else {
-        // Respaldo por si no encuentra el archivo manera manual:
-        for (int f = 0; f < FILAS_JUEGO; f++) {
-            jardin[f][0] = CASA;
-            vida[f][0] = 0;
-            guisantes[f][0] = 0;
-            for (int c = 1; c < COLUMNAS_JUEGO; c++) {
-                jardin[f][c] = PASTO;
-                vida[f][c] = 0;
-                guisantes[f][c] = 0;
-                hielos[f][c] = 0;
-                congelado[f][c] = 0;
-            }
-        }
+    for(int i = 0;i < COLUMNAS_JUEGO;i++){
+        jardin[i][0] = CASA;
     }
 
-    //limpiar lo que viene despues por si el programa se vuelve a ejecutar
-    for (int f = 0; f < FILAS_JUEGO; f++) {
-        for (int c = 0; c < COLUMNAS_JUEGO; c++) {
-            if (jardin[f][c] == TUMBAS) {
-                jardin[f][c] = PASTO;
-            }
-        }
-    }
-
-    int tumbas = 6;
-    while(tumbas>0){
-        int f = rand() % FILAS_JUEGO;           // cualquier fila
-        int c = 1 + rand() % (COLUMNAS_JUEGO - 2);      // columnas de la 1 a COLUMNAS_JUEGO-2 para evitar generar tumbas en donde esta la generacion de zombies o en la casa
-        if (jardin[f][c] == PASTO) {            // solo en celdas libres
-            jardin[f][c] = TUMBAS;                   //el numero de la tumba es 8
-            tumbas--;
-        }
-    }
-
-    FILE *archivo_mapa_tumbas = fopen("config/mapa.txt", "w"); //hacemos el archivo de guardado con w que es write para escribir los datos que llevamos
-
-    for(int i=0; i<FILAS_JUEGO; i++){
-    for(int j=0; j<COLUMNAS_JUEGO; j++){
-        fprintf(archivo_mapa_tumbas, "%d ", obtener_celda(i,j));
-        }
-        fprintf(archivo_mapa_tumbas, "\n");
-        }
-    fclose(archivo_mapa_tumbas);
-
-    
+    generar_tumbas(tumbas, "config/mapa.txt");
 
     soles_caidos=0;
     puntaje = 0;
@@ -256,8 +204,10 @@ int plantar(int tipo, int fila, int col) { //Función para plantar
         return 0;
     }    
     if (soles < costo_planta(tipo)) {audio_reproducir(SFX_SinSOLES);
+        return 0;  
+    }
+    if(tumbas[fila][col] > 0){
         return 0;
-        
     }
     soles -= costo_planta(tipo);   //nos restamos el costo de la planta 
     espera_plantar = config.ESPERA_PLANTAR;
@@ -621,6 +571,13 @@ int obtener_congelado(int fila, int col) {
         return 0;
     }
     return congelado[fila][col];
+}
+
+int obtener_tumbas(int fila, int col) {
+    if (fila < 0 || fila >= FILAS_JUEGO || col < 0 || col >= COLUMNAS_JUEGO) {
+        return 0;
+    }
+    return tumbas[fila][col];
 }
 
 int obtener_puntaje(void) {

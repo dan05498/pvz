@@ -339,6 +339,18 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
         for (int fila = 0;fila < FILAS_JUEGO;fila++) {
             for (int columna = 0; columna < COLUMNAS_JUEGO;columna++){    
 
+                SDL_FRect rectanguloTumbas = {
+                        (float)(MARGEN_X + columna * ANCHO_CELDA) - 20,
+                        (float)(MARGEN_Y + fila * ALTO_CELDA) - 20,
+                        (float)ANCHO_CELDA + 20,
+                        (float)ALTO_CELDA + 20
+                    };
+
+                int tumbas = obtener_tumbas(fila,columna);
+                if(tumbas > 0){
+                    imprimirTextura(TUMBAS, rectanguloTumbas, obtener_dano(fila, columna), 0);
+                }
+
                 int elemento = obtener_celda(fila, columna);
 
                 SDL_FRect rectangulo;

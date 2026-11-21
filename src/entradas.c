@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../include/entradas.h"
+#include "../include/logica.h"
 
 //ahora se carga la confi
 void cargar_configuracion(struct configuracion *cfg, const char *ruta){
@@ -63,3 +65,32 @@ void cargar_configuracion(struct configuracion *cfg, const char *ruta){
     fclose(archivo_mapa);
  }
 
+void generar_tumbas(int mapa[5][11], const char *tumbass){
+    for (int f = 0; f < FILAS_JUEGO; f++) {
+        for (int c = 0; c < COLUMNAS_JUEGO; c++) {
+            if (mapa[f][c] == TUMBAS) {
+                mapa[f][c] = PASTO;
+            }
+        }
+    }
+
+    int tumbas = 6;
+    while(tumbas>0){
+        int f = rand() % FILAS_JUEGO;           // cualquier fila
+        int c = 1 + rand() % (COLUMNAS_JUEGO - 2);      // columnas de la 1 a COLUMNAS_JUEGO-2 para evitar generar tumbas en donde esta la generacion de zombies o en la casa
+        if (mapa[f][c] == PASTO) {            // solo en celdas libres
+            mapa[f][c] = TUMBAS;                   //el numero de la tumba es 8
+            tumbas--;
+        }
+    }
+
+    FILE *archivo_mapa_tumbas = fopen("config/mapa.txt", "w"); //hacemos el archivo de guardado con w que es write para escribir los datos que llevamos
+
+    for(int i=0; i<FILAS_JUEGO; i++){
+    for(int j=0; j<COLUMNAS_JUEGO; j++){
+        fprintf(archivo_mapa_tumbas, "%d ", obtener_celda(i,j));
+        }
+        fprintf(archivo_mapa_tumbas, "\n");
+        }
+    fclose(archivo_mapa_tumbas);
+}
