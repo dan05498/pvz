@@ -27,6 +27,7 @@ static SDL_Texture *hielo_textura0 = NULL;
 static SDL_Texture *seed_lanzaguisantes = NULL;
 static SDL_Texture *seed_girasol = NULL;
 static SDL_Texture *seed_nuez = NULL;
+static SDL_Texture *seed_lanzahielo = NULL;
 static SDL_Texture *seed_selector = NULL;
 
 static SDL_Texture *pala = NULL;
@@ -141,6 +142,10 @@ bool inicializarVisuales(void) {
         return false;
     }
     seed_nuez = cargarTextura("assets/images/seed_nuez.png");
+    if(!seed_nuez){
+        return false;
+    }
+    seed_lanzahielo = cargarTextura("assets/images/seed_lanzahielo.png");
     if(!seed_nuez){
         return false;
     }
@@ -282,6 +287,10 @@ void cerrarSDL(void) {
     if(seed_nuez) {
         SDL_DestroyTexture(seed_nuez); 
         seed_nuez = NULL;
+    }
+    if(seed_lanzahielo) {
+        SDL_DestroyTexture(seed_lanzahielo); 
+        seed_lanzahielo = NULL;
     }
     if(seed_selector) {
         SDL_DestroyTexture(seed_selector); 
@@ -469,12 +478,20 @@ void dibujarUI(int planta_elegida){
     SDL_RenderTexture(renderizador, seed_lanzaguisantes, NULL, &rectanguloLanzaguisantes);
 
     SDL_FRect rectanguloNuez = {
-        MARGEN_X_SELECTOR + 115 + 75 + 75,
+        MARGEN_X_SELECTOR + 115 + 75*2,
         MARGEN_Y_SELECTOR + 10,
         60.0f,
         80.0f
     };
     SDL_RenderTexture(renderizador, seed_nuez, NULL, &rectanguloNuez);
+
+    SDL_FRect rectanguloLanzahielo = {
+        MARGEN_X_SELECTOR + 115 + 75*3,
+        MARGEN_Y_SELECTOR + 10,
+        60.0f,
+        80.0f
+    };
+    SDL_RenderTexture(renderizador, seed_lanzahielo, NULL, &rectanguloLanzahielo);
 
     SDL_FRect rectanguloPala = {
         MARGEN_X_SELECTOR + 720.0f,
@@ -493,6 +510,9 @@ void dibujarUI(int planta_elegida){
             break;
         case NUEZ:
             SDL_RenderTexture(renderizador, seed_selector, NULL, &rectanguloNuez);
+            break;
+        case LANZAHIELO:
+            SDL_RenderTexture(renderizador, seed_selector, NULL, &rectanguloLanzahielo);
             break;
         case PALA:
             pala_seleccionada = 1;
