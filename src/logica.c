@@ -13,7 +13,7 @@ static struct configuracion config;
 
 static int tumbas[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};     //matriz de tumbas
 static int jardin[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};  //Matriz de Juego
-static int vida[FILAS_JUEGO][COLUMNAS_JUEGO] = {8};   //Matriz con la vida de las cosas del jardín
+static int vida[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};   //Matriz con la vida de las cosas del jardín
 static int guisantes[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};
 static int hielos[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};
 static int congelado[FILAS_JUEGO][COLUMNAS_JUEGO] = {0};
