@@ -179,7 +179,7 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
         }
     }
 
-    FILE *archivo_mapa_tumbas = fopen("config/mapa_tumbas", "w"); //hacemos el archivo de guardado con w que es write para escribir los datos que llevamos
+    FILE *archivo_mapa_tumbas = fopen("config/mapa.txt", "w"); //hacemos el archivo de guardado con w que es write para escribir los datos que llevamos
 
     for(int i=0; i<FILAS_JUEGO; i++){
     for(int j=0; j<COLUMNAS_JUEGO; j++){
