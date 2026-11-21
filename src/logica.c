@@ -69,6 +69,9 @@ static int vida_inicial(int codigo) {  //Vida de las plantas
     if (codigo == LANZAGUISANTES) {
         return config.VIDA_LANZAGUISANTES;
     }
+    if (codigo == LANZZAHIELO){
+        return config.VIDA_LANZAHIELO;
+    }
     if (codigo== GIGANTE) {
         return config.VIDA_GIGANTE + oleada/2;
     }
@@ -142,7 +145,7 @@ void guardar_record(void) {
 void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego y vida
     config = *cfg;
     
-    for(int i = 0;i < COLUMNAS_JUEGO;i++){
+    for(int i = 0; i < FILAS_JUEGO; i++){
         jardin[i][0] = CASA;
     }
 
