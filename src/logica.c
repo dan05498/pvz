@@ -8,6 +8,7 @@
 #define EN_OLEADA        1
 #define EN_DESCANSO      2
 
+
 static struct configuracion config;
 
 static int jardin[FILAS_JUEGO][COLUMNAS_JUEGO];  //Matriz de Juego
@@ -165,6 +166,16 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
                 hielos[f][c] = 0;
                 congelado[f][c] = 0;
             }
+        }
+    }
+
+    int tumbas = 6;
+    while(tumbas>0){
+        int f = rand() % FILAS_JUEGO;           // cualquier fila
+        int c = 1 + rand() % (COLUMNAS_JUEGO - 2);      // columnas de la 1 a COLUMNAS_JUEGO-2 para evitar generar tumbas en donde esta la generacion de zombies o en la casa
+        if (jardin[f][c] == PASTO) {            // solo en celdas libres
+            jardin[f][c] = TUMBAS;                   //el numero de la tumba es 8
+            tumbas--;
         }
     }
 

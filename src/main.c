@@ -3,6 +3,9 @@
 #include "../include/logica.h"
 #include "../include/visuales.h"
 #include "../include/audio.h"
+#include <stdlib.h>
+#include <time.h>
+
 
 typedef enum {
     MENU,
@@ -14,6 +17,7 @@ typedef enum {
 } estado;
 
 int main(){
+    srand(time(NULL));
     struct configuracion cfg;
 
     //funciones:
