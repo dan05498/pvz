@@ -140,19 +140,6 @@ void guardar_record(void) {
 
 void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego y vida
     config = *cfg;
-
-    FILE *archivo_base = fopen("config/base.txt", "r");
-    if (archivo_base != NULL) {
-        for (int f = 0; f < FILAS_JUEGO; f++) {
-            for (int c = 0; c < COLUMNAS_JUEGO; c++) {
-                fscanf(archivo_base, "%d", &jardin[f][c]);
-                vida[f][c] = 0;
-                guisantes[f][c] = 0;
-                hielos[f][c] = 0;
-                congelado[f][c] = 0;
-            }
-        }
-        fclose(archivo_base);
     
     FILE *archivo_mapa = fopen("config/mapa.txt", "r");
     if (archivo_mapa != NULL) {
@@ -165,7 +152,6 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
                 congelado[f][c] = 0;
             }
         }
-    }
         fclose(archivo_mapa);
     } else {
         // Respaldo por si no encuentra el archivo manera manual:
@@ -192,6 +178,18 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
             tumbas--;
         }
     }
+
+    FILE *archivo_mapa_tumbas = fopen("config/mapa_tumbas", "w"); //hacemos el archivo de guardado con w que es write para escribir los datos que llevamos
+
+    for(int i=0; i<FILAS_JUEGO; i++){
+    for(int j=0; j<COLUMNAS_JUEGO; j++){
+        fprintf(archivo_mapa_tumbas, "%d ", obtener_celda(i,j));
+        }
+        fprintf(archivo_mapa_tumbas, "\n");
+        }
+    fclose(archivo_mapa_tumbas);
+
+    
 
     soles_caidos=0;
     puntaje = 0;
