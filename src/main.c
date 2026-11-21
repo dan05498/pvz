@@ -112,7 +112,7 @@ int main(){
                     planta_elegida = LANZAHIELO;
                 }
                 if(evento.key.key == SDLK_5){
-                    planta_elegida = LANZAHIELO;
+                    planta_elegida = PALA;
                 }
             }
 
