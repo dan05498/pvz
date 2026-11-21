@@ -12,6 +12,8 @@ static SDL_Texture *fondoSelector = NULL;
 
 static SDL_Texture *defeat = NULL;
 
+static SDL_Texture *tumbas = NULL;
+
 static SDL_Texture *girasol_textura0 = NULL;
 static SDL_Texture *lanzaguisantes_textura0 = NULL;
 static SDL_Texture *lanzahielo_textura0 = NULL;
@@ -87,6 +89,10 @@ bool inicializarVisuales(void) {
     }
     defeat = cargarTextura("assets/images/defeat.png");
     if(!defeat){
+        return false;
+    }
+    tumbas = cargarTextura("assets/images/tumbas.png");
+    if(!tumbas){
         return false;
     }
     lanzaguisantes_textura0 = cargarTextura("assets/images/lanzaguisantes_textura0.png");
@@ -224,6 +230,10 @@ void cerrarSDL(void) {
         SDL_DestroyTexture(defeat); 
         defeat = NULL;
     }
+    if(tumbas) {
+        SDL_DestroyTexture(tumbas); 
+        tumbas = NULL;
+    }
     if (fuente_costo) {
         TTF_CloseFont(fuente_costo);
         fuente_costo = NULL;
@@ -331,7 +341,7 @@ void loopVisuales(float pos_camara_x, int estadoJuego, int planta_elegida){
             int elemento = obtener_celda(fila, columna);
 
             SDL_FRect rectangulo;
-            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE || elemento == GIGANTE){ //Con esto hago la distinción, los zombis son más altos que las plantas
+            if (elemento == ZOMBIE || elemento == FLAG_ZOMBIE){ //Con esto hago la distinción, los zombis son más altos que las plantas
                 float salida_zombis = 90.0;
                 rectangulo.x = (float)((MARGEN_X + columna * ANCHO_CELDA) - salida_zombis);
                 rectangulo.y = (float)((MARGEN_Y + fila * ALTO_CELDA) - salida_zombis);
@@ -442,6 +452,9 @@ void imprimirTextura(int planta, SDL_FRect rectangulo, int daño_nuez, int conge
             break;
         case HIELO:
             SDL_RenderTexture(renderizador, hielo_textura0, NULL, &rectangulo);
+            break;
+        case TUMBAS:
+            SDL_RenderTexture(renderizador, tumbas, NULL, &rectangulo);
             break;
     }
 }
