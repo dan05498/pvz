@@ -69,6 +69,9 @@ static int vida_inicial(int codigo) {  //Vida de las plantas
     if (codigo == LANZAGUISANTES) {
         return config.VIDA_LANZAGUISANTES;
     }
+    if (codigo == LANZZAHIELO){
+        return config.VIDA_LANZAHIELO;
+    }
     if (codigo== GIGANTE) {
         return config.VIDA_GIGANTE + oleada/2;
     }
