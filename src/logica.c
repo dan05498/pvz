@@ -142,7 +142,7 @@ void guardar_record(void) {
 void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego y vida
     config = *cfg;
     
-    for(int i = 0;i < COLUMNAS_JUEGO;i++){
+    for(int i = 0; i < FILAS_JUEGO; i++){
         jardin[i][0] = CASA;
     }
 
