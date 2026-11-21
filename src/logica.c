@@ -446,7 +446,7 @@ static void empezar_oleada(void) {
     bandera_por_salir = 0;
     gigantes_por_salir = 0;
 
-    if (oleada % 2 == 0) {
+    if (oleada % 2 == 0 || oleada == config.TOTAL_OLEADAS) { {
         zombies_por_salir += 3;
         bandera_por_salir = 1;
     }
@@ -475,8 +475,13 @@ static void controlar_oleadas(void) {
             }
         } else if (contar_zombies() == 0) {
             puntaje += 50 * oleada;
-            fase = EN_DESCANSO;
-            espera = config.TURNOS_DESCANSO;
+            if (oleada >= config.TOTAL_OLEADAS) {
+                estado = VICTORIA;
+                guardar_record();
+            } else {
+                fase = EN_DESCANSO;
+                espera = config.TURNOS_DESCANSO;
+            }
         }
     }
 }
