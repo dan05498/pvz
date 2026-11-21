@@ -6,6 +6,7 @@
 
 #define FILAS_JUEGO      5    //Filas y columnas donde se jugará
 #define COLUMNAS_JUEGO   11
+#define TUMBAS           8
 
 #define PASTO            0
 #define GIRASOL          1    //Plantas
