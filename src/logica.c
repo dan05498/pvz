@@ -446,7 +446,7 @@ static void empezar_oleada(void) {
     bandera_por_salir = 0;
     gigantes_por_salir = 0;
 
-    if (oleada % 2 == 0 || oleada == config.TOTAL_OLEADAS) { {
+    if (oleada % 2 == 0 || oleada == config.TOTAL_OLEADAS) { 
         zombies_por_salir += 3;
         bandera_por_salir = 1;
     }
