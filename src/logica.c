@@ -169,6 +169,15 @@ void iniciar_logica(struct configuracion *cfg) { //Iniciamos la matriz de juego 
         }
     }
 
+    //limpiar lo que viene despues por si el programa se vuelve a ejecutar
+    for (int f = 0; f < FILAS_JUEGO; f++) {
+        for (int c = 0; c < COLUMNAS_JUEGO; c++) {
+            if (jardin[f][c] == TUMBAS) {
+                jardin[f][c] = PASTO;
+            }
+        }
+    }
+
     int tumbas = 6;
     while(tumbas>0){
         int f = rand() % FILAS_JUEGO;           // cualquier fila
