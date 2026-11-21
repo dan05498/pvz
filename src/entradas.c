@@ -74,7 +74,7 @@ void generar_tumbas(int mapa[5][11], const char *tumbass){
         }
     }
 
-    int tumbas = 6;
+    int tumbas = 4;
     while(tumbas>0){
         int f = rand() % FILAS_JUEGO;           // cualquier fila
         int c = 1 + rand() % (COLUMNAS_JUEGO - 2);      // columnas de la 1 a COLUMNAS_JUEGO-2 para evitar generar tumbas en donde esta la generacion de zombies o en la casa

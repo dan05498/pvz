@@ -139,6 +139,8 @@ int main(){
                     ultimo_turno = ahora;
                 }
 
+                audio_zombies(hay_zombie());//osea mientras este el juego activo en PLay usamos el audio si hay zombies
+                audio_zombies_comiendo(hay_zombie_comiendo()); // se parentesis de dentro es para usar el bool igual que hay zombie
                 if(estado_juego() == VICTORIA){
                     printf("Ganaste\n");    //por ahora donde no hay pantalla de victoria xD
                     estadoJuego = VICTORY;
@@ -155,9 +157,6 @@ int main(){
                     audio_zombies(false);
                     audio_zombies_comiendo(false);
                 }
-                audio_zombies(hay_zombie());//osea mientras este el juego activo en PLay usamos el audio si hay zombies
-
-                audio_zombies_comiendo(hay_zombie_comiendo()); // se parentesis de dentro es para usar el bool igual que hay zombie
                 break;
             case PAUSE:
                 break;
